@@ -1,14 +1,13 @@
 # Robot Stock Trader
-* Smarter invest, Better life
+* Smart investing, simplified.
 * Created by Robot Stock Trading Group LLC.
 * Steve, Rohan, Anmol
 
 ## Holding your money gets you nowhere but inflation
 
-#### How do individuals make smarter investment decision by avoiding the volatility in the market and compete with institutional investors
+#### How do individuals make smarter investment decisions by avoiding the volatility in the market and compete with institutional investors
 
-It is difficult for ordinary users to make money off of the stock market because it is hard to commit enough time to constantly watching it and analyzing trends. In addition, it is typically not worth creating a real high-frequency trading robot because HFT terms have vastly better hardware and systems design to capitalize on miniscule intervals of time. A trading robot that holds positions for seconds or minutes is therefore a much better idea.
-
+It is difficult for ordinary users to make money off of the stock market because it is hard to commit enough time to constantly watch it and analyze trends. In addition, it is typically not worth creating a real high-frequency trading robot because HFT firms have vastly better hardware and systems design to capitalize on miniscule intervals of time. A trading robot that holds positions for seconds or minutes is therefore a much better idea.
 
 ## Who
 
