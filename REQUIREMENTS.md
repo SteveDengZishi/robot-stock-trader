@@ -16,4 +16,4 @@ Scenario: Customer creates an account with a username and password for secure lo
 Below is a diagram of this use case.
 
 ## Domain Model
-
+![alt text](UML/domain_model.png "A domain model of the system.")
