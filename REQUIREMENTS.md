@@ -1,9 +1,10 @@
 # Requirements
 
 ## Stakeholder Interviews
-TBD.
+TBA.
 
 ## End-User Observation
+TBA.
 
 ## Use Cases 
 We anticipate that the sole actor of the system will be the user / customer, since there will not be any admin roles besides the developers themselves. The primary and sole use case of this product that we plan to develop and optimize for is to automate trading with the stock market based on individual preferences. Below is an outline of this use case:
