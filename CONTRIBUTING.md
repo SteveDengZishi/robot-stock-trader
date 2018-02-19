@@ -26,11 +26,13 @@
 * In case someone is not able to complete their task, voice ahead of deadline and try to get help asap
 * If some tasks marked incomplete at the end of the sprint, vote and re-evalute task during stand-up and vote for priority or abortion
 
-## Weekly Meeting Schedule
-* Two hours weekly
-* Four hours during weekends
+## Daily Stand-Up Schedule
+
+* Mon/Wed/Fri 15 mins on slack during lunch time 12pm-12:15pm
+* Tues/Thurs in person 15 mins after class
 * Then we will pace ourselves and work remotely on individual task
 
 ## Rules for Prioritizing Backlog
+
 * Platform first then algorithm
 * We want to create the login web platform first for users to check their portfolio, choosing investing strategies, then inventing algorithms that can beat the market.
