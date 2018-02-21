@@ -4,7 +4,7 @@
 TBA.
 
 ## End-User Observation
-TBA.
+Alexa Livington is a 20 years old college student, sophomore, econs major, He heard about stocks and equity for the first time in lectures. He wants to invest using his own saving and build a investment portfolio. However, he understands too little about the market and sector and doesn't know what kind of stock he is going to invest in. He starts to buy in small shares of Gopro and Snap Chat stocks as he thinks they are cool things among the young people and should have a promising future. However, he did not any knowledge about the financial model of these two companies, and terrible quarter
 
 ## Use Cases 
 We anticipate that the sole actor of the system will be the user / customer, since there will not be any admin roles besides the developers themselves. The primary and sole use case of this product that we plan to develop and optimize for is to automate trading with the stock market based on individual preferences. Below is an outline of this use case:
