@@ -1,0 +1,16 @@
+
+{% extends "layout.html" %}
+{% block content %}
+	<div class="login-page">
+	  <div class="form">
+	    <form class="login-form" action="login.py" method="POST">
+	      <input type="text" name="Name" placeholder="Name"/>
+	      <input type="email" name="Email" placeholder="Email"/>
+	      <input type="text" name="Asset" placeholder="Investment Amount"/>
+	      <input type="text" name="username" placeholder="Username"/>
+  		  <input type="password" name="psw" placeholder="password"/>
+	      <button type="submit">Get Started</button>
+	    </form>
+	  </div>
+	</div>
+{% end block %}
