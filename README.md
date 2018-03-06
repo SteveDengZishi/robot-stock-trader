@@ -1,5 +1,5 @@
 # Robot Stock Trader
-* Smart investing, simplified.
+* Smart investing for everyone.
 * Created by Robot Stock Trading Group LLC.
 * Steve, Rohan, Anmol
 
