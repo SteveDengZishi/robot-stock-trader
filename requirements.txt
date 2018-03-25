@@ -4,6 +4,7 @@ Django==2.0.2
 Flask==0.12.2
 flask-heroku==0.1.9
 Flask-Cors==3.0.2
+Flask-WTF==0.14.2
 Flask-SQLAlchemy==2.3.2
 gunicorn==19.7.1
 lxml==3.7.2
@@ -16,4 +17,10 @@ pylint==1.6.4
 PyMySQL==0.7.10
 requests==2.12.4
 SQLAlchemy==1.2.5
+itsdangerous==0.24
+Jinja2==2.9.4
+Werkzeug==0.11.15
+WTForms==2.1
+zipline==1.1.1
+
 

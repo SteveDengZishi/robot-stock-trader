@@ -1,10 +1,22 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from forms import SignupForm
 
 app = Flask(__name__)
 
-@app.route("/")
+app.secret_key = "development-key"
+
+@app.route("/", methods=['GET','POST'])
 def login():
-	return render_template("login.html")
+	form = SignupForm();
+
+	if request.method == 'POST':
+		if form.validate() == False:
+			return render_template("login.html", form=form)
+		else:
+			return "success!"
+
+	else:
+		return render_template("login.html", form=form)
 
 if __name__ == "__main__":
 	app.run(debug=True)
