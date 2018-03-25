@@ -26,4 +26,7 @@ class RobotTraderTests(unittest.TestCase):
         result = self.app.get('/') 
 
         # assert the status code of the response
-        self.assertEqual(result.status_code, 200) 
+        self.assertEqual(result.status_code, 200)
+
+if __name__ == '__main__':
+    unittest.main()
