@@ -1,12 +1,13 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, IntegerField
+from wtforms.validators import Length, DataRequired, NumberRange, EqualTo
 
-class SignupForm(Form):
+class SignupForm(FlaskForm):
 	risks = [('Volatile', 'Volatile, High risk with high reward'),('Moderate', 'Moderate, Move at a relatively steady pace'),('Safe', 'Safe, Move little and minimize risk')]
-	username = StringField('Username')
-	email = StringField('Email')
-	password = PasswordField('Enter your password')
-	password1 = PasswordField('Re-type your password')
-	investment = IntegerField('Enter your investment in USD')
+	username = StringField('Username', validators=[DataRequired(), Length(min=5, max=15)])
+	email = StringField('Email', validators=[DataRequired()])
+	password = PasswordField('Enter your password', validators=[DataRequired(), Length(min=6)])
+	password1 = PasswordField('Re-type your password', validators=[DataRequired(), Length(min=6), EqualTo(fieldname='password', message='Passwords do not match')])
+	investment = IntegerField('Enter your investment in USD', validators=[DataRequired(), NumberRange(min=100)])
 	riskLevel = SelectField('Select the level of risk you can afford', choices=risks)
 	submit = SubmitField('Get Started')

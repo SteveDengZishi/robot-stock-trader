@@ -10,8 +10,11 @@ def login():
 	form = SignupForm();
 
 	if request.method == 'POST':
-		return "success!"
-		
+		if form.validate() == False:
+			return render_template("login.html", form=form)
+		else:
+			return "success!"
+
 	else:
 		return render_template("login.html", form=form)
 
