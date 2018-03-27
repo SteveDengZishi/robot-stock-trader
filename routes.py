@@ -15,10 +15,10 @@ db = SQLAlchemy(app)
 
 # Create our database model
 class User(db.Model):
-    __tablename__ = "Users"
+    __tablename__ = "users"
     uid = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100))
-    email = db.Column(db.String(120))
+    email = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(100))
     inv_amount = db.Column(db.Integer)
     risk_level = db.Column(db.Integer)
@@ -42,19 +42,20 @@ def login():
 		if form.validate() == False:
 			return render_template("login.html", form=form)
 		else:
-			username = request.form['username']
-			email = request.form['Email']
-			password = request.form['pwd']
-			asset = request.form['Asset']
-			risk_level = request.form['Risk Level']
+			# username = request.form['username']
+			# email = request.form['Email']
+			# password = request.form['pwd']
+			# asset = request.form['Asset']
+			risk_level = form.riskLevel.data
 			if(risk_level == 'Volatile'):
 				risk_level_int = 0
 			if(risk_level == 'Moderate'):
 				risk_level_int = 1
 			if(risk_level == 'Safe'):
 				risk_level_int = 2
-			newUser = User(username, email, password, asset, risk_level_int)
+			newUser = User(form.username.data, form.email.data, form.password.data, form.investment.data, risk_level_int)
 			db.session.add(newUser)
+			db.session.commit()
 			return "success!"
 
 	else:
