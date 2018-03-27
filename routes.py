@@ -2,8 +2,6 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from forms import SignupForm
 
-# from flask.ext.heroku import Heroku
-
 app = Flask(__name__)
 
 app.secret_key = "development-key"
@@ -33,7 +31,6 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
-# Set "homepage" to login.html
 @app.route("/", methods = ['GET', 'POST'])
 def login():
 	form = SignupForm();
@@ -42,10 +39,6 @@ def login():
 		if form.validate() == False:
 			return render_template("login.html", form=form)
 		else:
-			# username = request.form['username']
-			# email = request.form['Email']
-			# password = request.form['pwd']
-			# asset = request.form['Asset']
 			risk_level = form.riskLevel.data
 			if(risk_level == 'Volatile'):
 				risk_level_int = 0
@@ -60,28 +53,6 @@ def login():
 
 	else:
 		return render_template("login.html", form=form)
-
-# Save e-mail to database and send to success page
-# @app.route('/login', methods=['POST'])
-# def login():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         email = request.form['Email']
-#         password = request.form['psw']
-#         asset = request.form['Asset']
-#         risk_level = request.form['Risk Level']
-#
-#     if(risk_level == 'Volatile'):
-#         risk_level_int = 0
-#     if(risk_level == 'Moderate'):
-#         risk_level_int = 1
-#     if(risk_level == 'Safe'):
-#         risk_level_int = 2
-#
-#     newUser = User(username, email, password, asset, risk_level_int)
-#     db.session.add(newUser)
-#
-#     return render_template('login.html')
 
 if __name__ == "__main__":
 	app.run(debug=True)
