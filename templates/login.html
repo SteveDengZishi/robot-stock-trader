@@ -1,74 +1,56 @@
-
 {% extends "layout.html" %}
+
+{% block title %}
+<title>Trader Login</title>
+{% endblock %}
+
 {% block content %}
-	<div class="login-page">
-	  <div class="form">
-	    <form class="login-form" action="/" method="POST">
-	    	{{ form.hidden_tag() }}
-	    	<h5>Enter your username and email</h5>
-	      	<div>
-	      		{% if form.username.errors %}
-	      			{% for error in form.username.errors %}
-	      				<p id="error-message">{{ error }}</p>
-	      			{% endfor %}
-	      		{% endif %}
+<div class="limiter">
+	<div class="container-login100">
+	  	<div class="wrap-login100">
+		    <form class="login100-form validate-form" action="/" method="POST">
 
-	      		{{ form.username(placeholder="Username") }}
-	 
-	 			{% if form.email.errors %}
-	      			{% for error in form.email.errors %}
-	      				<p id="error-message">{{ error }}</p>
-	      			{% endfor %}
-	      		{% endif %}
-	      	
-	      		{{ form.email(placeholder="Email") }}
-	      	</div>
+		    	<span class="login100-form-title p-b-34">
+					Account Login
+				</span>
 
-	      	<div>
-	      		<h5>{{ form.password.label }}</h5>
+		    	{{ form.hidden_tag() }}
 
-	      		{% if form.password.errors %}
-	      			{% for error in form.password.errors %}
-	      				<p id="error-message">{{ error }}</p>
-	      			{% endfor %}
-	      		{% endif %}
+		      	<div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20">
+					{{ form.username(placeholder="Username") }}
+		      		<span class="focus-input100"></span>
+		      	</div>
 
-	      		{{ form.password(placeholder="Password") }}
-	      	</div>
+		      	<div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20">
+		      		{{ form.password(placeholder="Password") }}
+		      		<span class="focus-input100"></span>
+		      	</div>
 
-	      	<div>
-	      		<h5>{{ form.password1.label }}</h5>
+		      	<div class="container-login100-form-btn">
+					<button class="login100-form-btn" type="submit">
+						Sign in
+					</button>
+				</div>
 
-	      		{% if form.password1.errors %}
-	      			{% for error in form.password1.errors %}
-	      				<p id="error-message">{{ error }}</p>
-	      			{% endfor %}
-	      		{% endif %}
+				<div class="w-full text-center p-t-27 p-b-239">
+					<span class="txt1">
+						Forgot
+					</span>
 
-	      		{{ form.password1(placeholder="Password") }}
-	      	</div>
+					<a href="#" class="txt2">
+						Username / Password?
+					</a>
+				</div>
 
-	      	<div>
-	      		<h5>{{ form.investment.label }}</h5>
+				<div class="w-full text-center">
+					<a href="#" class="txt3">
+						Sign Up
+					</a>
+				</div>
+		    </form>
 
-	      		{% if form.investment.errors %}
-	      			{% for error in form.investment.errors %}
-	      				<p id="error-message">{{ error }}</p>
-	      			{% endfor %}
-	      		{% endif %}
-
-	      		{{ form.investment(placeholder="Investment Amount") }}
-	      	</div>
-
-	      	<div>
-	      		<h5>{{ form.riskLevel.label }}</h5>
-	      		{{ form.riskLevel }}
-	      	</div>
-
-	      	<br>
-
-	      	<button type="submit">Get Started</button>
-	    </form>
-	  </div>
+		    <div class="login100-more" style="background-image: url('images/bg-01.jpg');"></div>
+	    </div>
 	</div>
+</div>
 {% endblock %}

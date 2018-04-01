@@ -1,0 +1,74 @@
+
+{% extends "layout.html" %}
+{% block content %}
+	<div class="login-page">
+	  <div class="form">
+	    <form class="login-form" action="/signup" method="POST">
+	    	{{ form.hidden_tag() }}
+	    	<h5>Enter your username and email</h5>
+	      	<div>
+	      		{% if form.username.errors %}
+	      			{% for error in form.username.errors %}
+	      				<p id="error-message">{{ error }}</p>
+	      			{% endfor %}
+	      		{% endif %}
+
+	      		{{ form.username(placeholder="Username") }}
+	 
+	 			{% if form.email.errors %}
+	      			{% for error in form.email.errors %}
+	      				<p id="error-message">{{ error }}</p>
+	      			{% endfor %}
+	      		{% endif %}
+	      	
+	      		{{ form.email(placeholder="Email") }}
+	      	</div>
+
+	      	<div>
+	      		<h5>{{ form.password.label }}</h5>
+
+	      		{% if form.password.errors %}
+	      			{% for error in form.password.errors %}
+	      				<p id="error-message">{{ error }}</p>
+	      			{% endfor %}
+	      		{% endif %}
+
+	      		{{ form.password(placeholder="Password") }}
+	      	</div>
+
+	      	<div>
+	      		<h5>{{ form.password1.label }}</h5>
+
+	      		{% if form.password1.errors %}
+	      			{% for error in form.password1.errors %}
+	      				<p id="error-message">{{ error }}</p>
+	      			{% endfor %}
+	      		{% endif %}
+
+	      		{{ form.password1(placeholder="Password") }}
+	      	</div>
+
+	      	<div>
+	      		<h5>{{ form.investment.label }}</h5>
+
+	      		{% if form.investment.errors %}
+	      			{% for error in form.investment.errors %}
+	      				<p id="error-message">{{ error }}</p>
+	      			{% endfor %}
+	      		{% endif %}
+
+	      		{{ form.investment(placeholder="Investment Amount") }}
+	      	</div>
+
+	      	<div>
+	      		<h5>{{ form.riskLevel.label }}</h5>
+	      		{{ form.riskLevel }}
+	      	</div>
+
+	      	<br>
+
+	      	<button type="submit">Get Started</button>
+	    </form>
+	  </div>
+	</div>
+{% endblock %}
