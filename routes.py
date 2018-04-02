@@ -64,29 +64,27 @@ def make_fig(perf):
 
 @app.route("/", methods = ['GET', 'POST'])
 def login():
-	form = SignupForm();
-
-	if request.method == 'POST':
+    form = SignupForm()
+    if(request.method == 'POST'):
 		if form.validate() == False:
 			return render_template("login.html", form=form)
 		else:
             risk_level = form.riskLevel.data
             capex = form.investment.data
             if(risk_level == 'Volatile'):
-				risk_level_int = 0
-			if(risk_level == 'Moderate'):
-				risk_level_int = 1
-			if(risk_level == 'Safe'):
-				risk_level_int = 2
-			newUser = User(form.username.data, form.email.data, form.password.data, form.investment.data, risk_level_int)
-			db.session.add(newUser)
-			db.session.commit()
+                risk_level_int = 0
+            if(risk_level == 'Moderate'):
+                risk_level_int = 1
+            if(risk_level == 'Safe'):
+                risk_level_int = 2
+            newUser = User(form.username.data, form.email.data, form.password.data, form.investment.data, risk_level_int)
+            db.session.add(newUser)
+            db.session.commit()
             start = datetime.date(2015, 1, 1)
             end = datetime.date(2017, 1, 1)
             perf = zipline.run_algorithm(start, end, initialize, capex, handle_data)
             myplot = make_fig(perf)
-			return render_template("portfolio.html", myplot=myplot)
-
+            return render_template("portfolio.html", myplot=myplot)
 	else:
 		return render_template("login.html", form=form)
 
