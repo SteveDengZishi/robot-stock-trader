@@ -21,6 +21,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://skqtsiamfhxtft:32d113d4b722c
 db = SQLAlchemy(app)
 
 # Create our database model
+
+
 class User(db.Model):
     __tablename__ = "users"
     uid = db.Column(db.Integer, primary_key=True)
@@ -40,12 +42,15 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+
 def initialize(context):
     pass
+
 
 def handle_data(context, data):
     order(symbol('AAPL'), 10)
     record(AAPL=data.current(symbol('AAPL'), 'price'))
+
 
 def make_fig(perf):
     fig = Figure()
@@ -62,31 +67,39 @@ def make_fig(perf):
     response.headers['Content-Type'] = 'image/png'
     return response
 
-@app.route("/", methods = ['GET', 'POST'])
+
+@app.route("/", methods=['GET', 'POST'])
 def login():
     form = SignupForm()
     if(request.method == 'POST'):
-	if form.validate() == False:
-	    return render_template("login.html", form=form)
-	else:
-	    risk_level = form.riskLevel.data
-	    capex = form.investment.data
-	    if(risk_level == 'Volatile'):
+        if form.validate() == False:
+            return render_template("login.html", form=form)
+        else:
+            risk_level = form.riskLevel.data
+            capex = form.investment.data
+            if(risk_level == 'Volatile'):
                 risk_level_int = 0
             if(risk_level == 'Moderate'):
                 risk_level_int = 1
             if(risk_level == 'Safe'):
                 risk_level_int = 2
-            newUser = User(form.username.data, form.email.data, form.password.data, form.investment.data, risk_level_int)
+            newUser = User(
+                form.username.data,
+                form.email.data,
+                form.password.data,
+                form.investment.data,
+                risk_level_int)
             db.session.add(newUser)
             db.session.commit()
             start = datetime.date(2015, 1, 1)
             end = datetime.date(2017, 1, 1)
-            perf = zipline.run_algorithm(start, end, initialize, capex, handle_data)
+            perf = zipline.run_algorithm(
+                start, end, initialize, capex, handle_data)
             myplot = make_fig(perf)
             return render_template("portfolio.html", myplot=myplot)
-	else:
-	    return render_template("login.html", form=form)
+    else:
+        return render_template("login.html", form=form)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
