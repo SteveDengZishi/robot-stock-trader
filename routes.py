@@ -1,5 +1,6 @@
 import matplotlib
 matplotlib.use('agg')
+
 from flask import Flask, render_template, request, make_response
 from flask_sqlalchemy import SQLAlchemy
 from forms import SignupForm
@@ -8,7 +9,12 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import numpy as np
-import StringIO
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+    
 import zipline
 import datetime
 from zipline.api import order, record, symbol
