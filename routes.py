@@ -70,9 +70,9 @@ def login():
 		if form.validate() == False:
 			return render_template("login.html", form=form)
 		else:
-			risk_level = form.riskLevel.data
+            risk_level = form.riskLevel.data
             capex = form.investment.data
-			if(risk_level == 'Volatile'):
+            if(risk_level == 'Volatile'):
 				risk_level_int = 0
 			if(risk_level == 'Moderate'):
 				risk_level_int = 1
