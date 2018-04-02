@@ -16,7 +16,7 @@ except ImportError:
     from io import StringIO
 
 import zipline
-import datetime
+from datetime import datetime
 from zipline.api import order, record, symbol
 
 app = Flask(__name__)
@@ -99,8 +99,8 @@ def login():
                 risk_level_int)
             db.session.add(newUser)
             db.session.commit()
-            start = pd.Timestamp('201511')
-            end = pd.Timestamp('201711')
+            start = datetime(2015, 1, 1)
+            end = datetime(2017, 1, 1)
             zipline.data.bundles.ingest("quantopian-quandl")
             perf = zipline.run_algorithm(
                 start, end, initialize, capex, handle_data)
