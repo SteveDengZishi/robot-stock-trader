@@ -3,15 +3,19 @@
 <head>
 	{% block title %}
 	{% endblock %}
+	
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/Stock.ico') }}"/>
-<!--===============================================================================================-->
+
+	{% block css %}
+	{% endblock %}
+<!--===============================================================================================
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/util.css') }}"/>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}"/>
-	<!--link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}"-->
-<!--===============================================================================================-->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+===============================================================================================-->
 </head>
  	<body>
 	{% block content %}

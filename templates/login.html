@@ -4,6 +4,11 @@
 <title>Trader Login</title>
 {% endblock %}
 
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/util.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}"/>
+{% endblock %}
+
 {% block content %}
 <div class="limiter">
 	<div class="container-login100">
