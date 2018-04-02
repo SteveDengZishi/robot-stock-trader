@@ -9,11 +9,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import numpy as np
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+import io
 
 import zipline
 from datetime import datetime
@@ -69,7 +65,7 @@ def make_fig(perf):
     # perf.AAPL.plot(ax=ax2)
     # ax2.set_ylabel('AAPL stock price')
     canvas = FigureCanvas(fig)
-    png_output = StringIO.StringIO()
+    png_output = io.StringIO()
     canvas.print_png(png_output)
     response = make_response(png_output.getvalue())
     response.headers['Content-Type'] = 'image/png'
