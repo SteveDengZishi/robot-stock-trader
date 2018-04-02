@@ -13,7 +13,7 @@ from zipline.api import order, record, symbol
 
 app = Flask(__name__)
 
-app.secret_key = "development-ksey"
+app.secret_key = "development-key"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://skqtsiamfhxtft:32d113d4b722c701dae458160b179e9c3f06cfab6fd5ccd9e31932afcba018b4@ec2-23-21-121-220.compute-1.amazonaws.com:5432/d14f5uhqoad2g'
 
