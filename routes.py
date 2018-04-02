@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from forms import SignupForm
+from forms import LoginForm
 
 app = Flask(__name__)
 
@@ -31,13 +32,13 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
-@app.route("/", methods = ['GET', 'POST'])
-def login():
+@app.route("/signup", methods = ['GET', 'POST'])
+def signup():
 	form = SignupForm();
 
 	if request.method == 'POST':
 		if form.validate() == False:
-			return render_template("login.html", form=form)
+			return render_template("signup.html", form=form)
 		else:
 			risk_level = form.riskLevel.data
 			if(risk_level == 'Volatile'):
@@ -50,6 +51,16 @@ def login():
 			db.session.add(newUser)
 			db.session.commit()
 			return "success!"
+
+	else:
+		return render_template("signup.html", form=form)
+
+@app.route("/", methods = ['GET','POST'])
+def login():
+	form = LoginForm();
+
+	if request.method == 'POST':
+		print("Connecting to DB")
 
 	else:
 		return render_template("login.html", form=form)

@@ -11,3 +11,8 @@ class SignupForm(FlaskForm):
 	investment = IntegerField('Enter your investment in USD', validators=[DataRequired(), NumberRange(min=100)])
 	riskLevel = SelectField('Select the level of risk you can afford', choices=risks)
 	submit = SubmitField('Get Started')
+
+
+class LoginForm(FlaskForm):
+	username = StringField('Username')
+	password = PasswordField('Enter your password')
