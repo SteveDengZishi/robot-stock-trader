@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('agg')
 from flask import Flask, render_template, request, make_response
 from flask_sqlalchemy import SQLAlchemy
 from forms import SignupForm
