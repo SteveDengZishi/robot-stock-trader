@@ -10,10 +10,10 @@ import sys
 # we open the file for reading
 fileName = input("Which file do you want to unpickle: ")
 try:
-	with open(fileName,'rb') as infile:
-		# load the object from the file into var b
-		content = pickle.load(infile) 
-		print(content)
+    with open(fileName,'rb') as infile:
+        # load the object from the file into var b
+        content = pickle.load(infile) 
+        print(content)
 
 except FileNotFoundError:
-	sys.exit(0)
+    sys.exit(0)

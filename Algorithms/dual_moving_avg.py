@@ -10,7 +10,7 @@ def handle_data(context, data):
     context.i += 1
     if context.i < 300:
         return
-    
+
     # Compute averages
     # data.history() has to be called with the same params
     # from above and returns a pandas dataframe.

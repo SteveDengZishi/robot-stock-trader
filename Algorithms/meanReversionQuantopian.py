@@ -57,7 +57,7 @@ def make_pipeline(context):
     # Filter for stocks in the Q1500US universe. For more detail, see this post:
     # https://www.quantopian.com/posts/the-q500us-and-q1500us
     universe = Q1500US()
-    
+
     # Create a Returns factor with a 5-day lookback window for all 
     # securities in our Q1500US Filter.
     recent_returns = Returns(window_length=context.returns_lookback, 
@@ -116,7 +116,7 @@ def compute_weights(context):
     # for each short position.
     long_weight = context.long_leverage / len(context.long_secs)
     short_weight = context.short_leverage / len(context.short_secs)
-    
+
     return long_weight, short_weight
 
 def rebalance(context,data):
