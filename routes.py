@@ -66,12 +66,12 @@ def make_fig(perf):
 def login():
     form = SignupForm()
     if(request.method == 'POST'):
-		if form.validate() == False:
-			return render_template("login.html", form=form)
-		else:
-            risk_level = form.riskLevel.data
-            capex = form.investment.data
-            if(risk_level == 'Volatile'):
+	if form.validate() == False:
+	    return render_template("login.html", form=form)
+	else:
+	    risk_level = form.riskLevel.data
+	    capex = form.investment.data
+	    if(risk_level == 'Volatile'):
                 risk_level_int = 0
             if(risk_level == 'Moderate'):
                 risk_level_int = 1
@@ -86,7 +86,7 @@ def login():
             myplot = make_fig(perf)
             return render_template("portfolio.html", myplot=myplot)
 	else:
-		return render_template("login.html", form=form)
+	    return render_template("login.html", form=form)
 
 if __name__ == "__main__":
-	app.run(debug=True)
+    app.run(debug=True)
