@@ -20,7 +20,7 @@ itsdangerous==0.24
 Jinja2==2.9.4
 Werkzeug==0.11.15
 WTForms==2.1
-zipline==1.1.1
+git+git://github.com/quantopian/zipline@master
 psycopg2==2.7.4
 
 
