@@ -99,8 +99,8 @@ def login():
                 risk_level_int)
             db.session.add(newUser)
             db.session.commit()
-            start = datetime(2015, 1, 1)
-            end = datetime(2017, 1, 1)
+            start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
+            end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
             zipline.data.bundles.ingest("quantopian-quandl")
             perf = zipline.run_algorithm(
                 start, end, initialize, capex, handle_data)
