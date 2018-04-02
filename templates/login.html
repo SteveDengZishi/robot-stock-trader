@@ -17,12 +17,12 @@
 		    	{{ form.hidden_tag() }}
 
 		      	<div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20">
-					{{ form.username(placeholder="Username") }}
+					{{ form.username(placeholder="Username", class_="input100") }}
 		      		<span class="focus-input100"></span>
 		      	</div>
 
 		      	<div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20">
-		      		{{ form.password(placeholder="Password") }}
+		      		{{ form.password(placeholder="Password", class_="input100") }}
 		      		<span class="focus-input100"></span>
 		      	</div>
 
@@ -49,7 +49,7 @@
 				</div>
 		    </form>
 
-		    <div class="login100-more" style="background-image: url('images/bg-01.jpg');"></div>
+		    <div class="login100-more" style="background-image: url({{ url_for('static', filename='img/bg-01.jpg') }});"></div>
 	    </div>
 	</div>
 </div>
