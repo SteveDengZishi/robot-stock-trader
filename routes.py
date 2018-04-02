@@ -60,7 +60,7 @@ def login():
 	form = LoginForm();
 
 	if request.method == 'POST':
-		print("Connecting to DB")
+		return "Connecting to DB"
 
 	else:
 		return render_template("login.html", form=form)
