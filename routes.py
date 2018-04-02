@@ -14,7 +14,7 @@ try:
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
-    
+
 import zipline
 import datetime
 from zipline.api import order, record, symbol
@@ -101,6 +101,7 @@ def login():
             db.session.commit()
             start = datetime.date(2015, 1, 1)
             end = datetime.date(2017, 1, 1)
+            zipline.data.bundles.ingest("quantopian-quandl")
             perf = zipline.run_algorithm(
                 start, end, initialize, capex, handle_data)
             myplot = make_fig(perf)
