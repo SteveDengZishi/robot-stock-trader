@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% block title %}
+<title>Trader Portfolio</title>
+{% endblock %}
+
+{% block css %}
+<!--link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/util.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}"/-->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+<header class="container">
+			<nav class="navbar navbar-default">
+			  <div class="container-fluid">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <a class="navbar-brand" href="#"><b>DUFFIELD BROTHERS</b></a>
+			    </div>
+
+			    <!-- Collect the nav links, forms, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="avbar-collapse-1">
+			      <ul class="nav navbar-nav">
+			        <li class="active"><a href="https://www.linkedin.com/in/zishi-steve-deng-458883112"><b>Linkedin</b><span class="sr-only"></span></a></li>
+			        <li><a href="http://stackoverflow.com/users/6918919/steve-deng-zishi?tab=profile"><b>StackOverflow</b></a></li>
+			        <li class="dropdown">
+			          <a href="https://github.com/SteveDengZishi" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>GitHub Portfolio</b><span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			            <li><a href="https://github.com/SteveDengZishi/python-web-access">Web Scrapping in Python</a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="https://github.com/SteveDengZishi/ACM_UVA_algorithmic_problem_solving">ACM-ICPC Competitive Programming</a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="https://github.com/SteveDengZishi/HackerRank">Hacker-rank Practices</a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="https://github.com/SteveDengZishi/ChickenFight">Chicken Fight Python Game</a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="https://github.com/SteveDengZishi/Graph_Partitioning_Research">Social Graph Partitioning Algorithm Research</a></li>
+			          </ul>
+			        </li>
+			      </ul>
+			      <form class="navbar-form navbar-left" role="search">
+			        <div class="form-group">
+			          <input type="text" class="form-control" placeholder="Search">
+			        </div>
+			        <button type="submit" class="btn btn-default">Submit</button>
+			      </form>
+			      <ul class="nav navbar-nav navbar-right">
+			        <li><a href="https://www.google.com/maps/place/New+York+University's+Courant+Institute+of+Mathematical+Sciences/@40.7286647,-73.9978862,17z/data=!3m1!4b1!4m5!3m4!1s0x89c259906d060f39:0xd3568256090e73ed!8m2!3d40.7286607!4d-73.9956975"><b>Directions</b></a></li>
+			        <li class="dropdown">
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>Contact Us</b><span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			            <li><a href="#">Email - zd475@nyu.edu</a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="#">Cell - 7753575903</a></li>
+			          </ul>
+			        </li>
+			      </ul>
+			    </div><!-- /.navbar-collapse -->
+			  </div><!-- /.container-fluid -->
+			</nav>
+		<img class="container" src="./img/courant.png" alt= Courant/>
+	</header>
+{% endblock %}
