@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from forms import SignupForm
 from forms import LoginForm
@@ -34,34 +34,43 @@ class User(db.Model):
 
 @app.route("/portfolio", methods = ['GET', 'POST'])
 def portfolio():
-	if request.method == 'POST':
-		return "Under construction"
-	else:
-		return render_template("portfolio.html")
+    if request.method == 'POST':
+        return "Under construction"
+    else:
+        return render_template("portfolio.html")
 
 
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
-	form = SignupForm();
+    form = SignupForm();
 
-	if request.method == 'POST':
-		if form.validate() == False:
-			return render_template("signup.html", form=form)
-		else:
-			risk_level = form.riskLevel.data
-			if(risk_level == 'Volatile'):
-				risk_level_int = 0
-			if(risk_level == 'Moderate'):
-				risk_level_int = 1
-			if(risk_level == 'Safe'):
-				risk_level_int = 2
-			newUser = User(form.username.data, form.email.data, form.password.data, form.investment.data, risk_level_int)
-			db.session.add(newUser)
-			db.session.commit()
-			return "success!"
+    if request.method == 'POST':
+        if form.validate() == False:
+            return render_template("signup.html", form=form)
+        else:
+            risk_level = form.riskLevel.data
+            if(risk_level == 'Volatile'):
+                risk_level_int = 0
+            if(risk_level == 'Moderate'):
+                risk_level_int = 1
+            if(risk_level == 'Safe'):
+                risk_level_int = 2
+            newUser = User(form.username.data, form.email.data, form.password.data, form.investment.data, risk_level_int)
+            db.session.add(newUser)
+            db.session.commit()
 
-	else:
-		return render_template("signup.html", form=form)
+            session['username'] = newUser.username
+            session['email'] = newUser.email
+            session['investment'] = newUser.inv_amount
+            session['risk_level'] = newUser.risk_level
+            return redirect(url_for('portfolio'))
+    else:
+        return render_template("signup.html", form=form)
+
+@app.route("/logout")
+def logout():
+    session.pop("username", None)
+    return redirect(url_for('login'))
 
 @app.route("/", methods = ['GET','POST'])
 def login():
@@ -70,10 +79,14 @@ def login():
         userName = form.username.data
         password = form.password.data
         userLogin = User.query.filter_by(username=userName).first()
-        if(userLogin.password) == password:
-            return "Successfuly Logged In"
+        if(userLogin != None and userLogin.password == password):
+            session['username'] = userName
+            session['email'] = userLogin.email
+            session['investment'] = userLogin.inv_amount
+            session['risk_level'] = userLogin.risk_level
+            return redirect(url_for('portfolio'))
         else:
-            return "Incorrect Password Try Again"
+            return redirect(url_for('login'))
 
     else:
         return render_template("login.html", form=form)
