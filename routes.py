@@ -57,13 +57,18 @@ def signup():
 
 @app.route("/", methods = ['GET','POST'])
 def login():
-	form = LoginForm();
+    form = LoginForm();
+    if request.method == 'POST':
+        userName = form.username.data
+        password = form.password.data
+        userLogin = User.query.filter_by(username=userName).first()
+        if(userLogin.password) == password:
+            return "Successfuly Logged In"
+        else:
+            return "Incorrect Password Try Again"
 
-	if request.method == 'POST':
-		return "Connecting to DB"
-
-	else:
-		return render_template("login.html", form=form)
+    else:
+        return render_template("login.html", form=form)
 
 if __name__ == "__main__":
 	app.run(debug=True)
