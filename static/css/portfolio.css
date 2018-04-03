@@ -1,0 +1,77 @@
+body{
+		background-image: url('/static/img/bg-01.jpg');
+		background-size: cover;
+		color: purple;
+		font-family: sans-serif;
+		text-align: center;
+}
+
+nav[class="navbar navbar-default"]{
+	position: relative;
+	left:1%;
+}
+
+img[class=container]{
+	height: 150px;
+}
+
+#photo{
+	width: 300px;
+	height: 275px;
+}
+
+#left{
+	position: absolute;
+	display: inline-block;
+	top:32%;
+	left:20%;
+	padding: 2%;
+	margin-top: 2%;
+	font-family: sans-serif;
+}
+
+#right{
+	position: absolute;
+	top: 37%;
+	left: 50%;
+}
+
+section a{
+	font-family: fantasy;
+	font-size: x-large;
+}
+
+#bottom{
+	float: bottom;
+}
+
+.dropdown:hover .dropdown-menu{
+	display:block;
+}
+
+article[id=a]{
+	position: relative;
+	float:left;
+	margin: 5%;
+	display: inline-block;
+	width: 40%;
+}
+
+article[id=b]{
+	position:absolute;
+	float:left;
+	top: 10%;
+	left: 45%;
+	margin: 5%;
+	display: inline-block;
+	width: 40%;
+}
+
+footer{
+	position:absolute;
+	bottom:2%;
+	left:45%;
+}
+
+
+
