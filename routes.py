@@ -57,19 +57,18 @@ def handle_data(context, data):
 
 
 def make_fig(perf):
-    fig = Figure()
-    ax1 = fig.add_subplot(111)
+    fig = plt.figure()
+    ax1 = plt.subplot(211)
     perf.portfolio_value.plot(ax=ax1)
     ax1.set_ylabel('portfolio value')
     # ax2 = plt.subplot(112, sharex=ax1)
     # perf.AAPL.plot(ax=ax2)
     # ax2.set_ylabel('AAPL stock price')
-    canvas = FigureCanvas(fig)
-    png_output = io.StringIO()
-    canvas.print_png(png_output)
-    response = make_response(png_output.getvalue())
-    response.headers['Content-Type'] = 'image/png'
-    return response
+    fig.savefig('plot.png')
+
+    # response = make_response(img.getvalue())
+    # response.headers['Content-Type'] = 'image/png'
+    # return response
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -100,8 +99,8 @@ def login():
             zipline.data.bundles.ingest("quantopian-quandl")
             perf = zipline.run_algorithm(
                 start, end, initialize, capex, handle_data)
-            myplot = make_fig(perf)
-            return render_template("portfolio.html", myplot=myplot)
+            make_fig(perf)
+            return render_template("portfolio.html")
     else:
         return render_template("login.html", form=form)
 
