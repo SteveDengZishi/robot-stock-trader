@@ -32,6 +32,14 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+@app.route("/portfolio", methods = ['GET', 'POST'])
+def portfolio():
+	if request.method == 'POST':
+		return "Under construction"
+	else:
+		return render_template("portfolio.html")
+
+
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
 	form = SignupForm();
@@ -60,7 +68,7 @@ def login():
 	form = LoginForm();
 
 	if request.method == 'POST':
-		print("Connecting to DB")
+		return ("Connecting to DB")
 
 	else:
 		return render_template("login.html", form=form)
