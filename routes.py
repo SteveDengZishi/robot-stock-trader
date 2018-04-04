@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from forms import SignupForm
 from forms import LoginForm
-import pandas as pd
 import numpy as np
 import zipline
 from datetime import datetime
