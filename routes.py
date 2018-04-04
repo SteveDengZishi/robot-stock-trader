@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from forms import SignupForm
 from forms import LoginForm
 import numpy as np
+import pandas as pd
 import zipline
 from datetime import datetime
 from zipline.api import order, record, symbol
