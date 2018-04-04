@@ -40,6 +40,15 @@ def portfolio():
         return render_template("portfolio.html")
 
 
+def setup_zipline():
+    capital = session['investment']
+    try:
+        zipline.data.bundles.load('quantopian-quandl')
+    except:
+        zipline.data.bundles.ingest('quantopian-quandl')
+    
+
+
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
     form = SignupForm();
