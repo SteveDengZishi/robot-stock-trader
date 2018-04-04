@@ -45,6 +45,13 @@ def portfolio():
         return render_template("portfolio.html", perfhead=perfhead)
 
 
+def initialize(context):
+    pass
+
+def handle_data(context, data):
+    order(symbol('AAPL'), 10)
+    record(AAPL=data.current(symbol('AAPL'), 'price'))
+
 def setup_zipline():
     capital = session['investment']
     try:
