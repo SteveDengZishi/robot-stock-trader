@@ -65,7 +65,7 @@ def setup_zipline():
     start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
     end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
     df = zipline.run_algorithm(start, end, initialize, capital, handle_data)
-    data = go.Scatter(x=df.iloc[:, 0], y=df['portfolio_value'])
+    data = [go.Scatter(x=df.iloc[:, 0], y=df['portfolio_value'])]
     url = py.plot(data, filename='pandas/basic-line-plot')
     return tls.get_embed(url)
 
