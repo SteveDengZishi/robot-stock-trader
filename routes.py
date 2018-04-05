@@ -2,6 +2,11 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from forms import SignupForm
 from forms import LoginForm
+import numpy as np
+import pandas as pd
+import zipline
+from datetime import datetime
+from zipline.api import order, record, symbol
 
 app = Flask(__name__)
 
@@ -37,8 +42,27 @@ def portfolio():
     if request.method == 'POST':
         return "Under construction"
     else:
-        return render_template("portfolio.html")
+        perfhead = setup_zipline()
+        return render_template("portfolio.html", perfhead=perfhead)
 
+
+def initialize(context):
+    pass
+
+def handle_data(context, data):
+    order(symbol('AAPL'), 10)
+    record(AAPL=data.current(symbol('AAPL'), 'price'))
+
+def setup_zipline():
+    capital = 1000000
+    try:
+        zipline.data.bundles.load('quantopian-quandl')
+    except:
+        zipline.data.bundles.ingest('quantopian-quandl')
+    start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
+    end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
+    perf = zipline.run_algorithm(start, end, initialize, capital, handle_data)
+    return perf.head().to_html()
 
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
