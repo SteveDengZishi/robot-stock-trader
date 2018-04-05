@@ -9,6 +9,7 @@ from datetime import datetime
 from zipline.api import order, record, symbol
 import plotly.plotly as py
 import plotly.graph_objs as go
+import plotly.offline as off
 import plotly.tools as tls
 
 app = Flask(__name__)
@@ -45,8 +46,8 @@ def portfolio():
     if request.method == 'POST':
         return "Under construction"
     else:
-        perfhead = setup_zipline()
-        return render_template("portfolio.html", perfhead=perfhead)
+        content = setup_zipline()
+        return render_template("portfolio.html", content=content)
 
 
 def initialize(context):
@@ -66,8 +67,11 @@ def setup_zipline():
     end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
     df = zipline.run_algorithm(start, end, initialize, capital, handle_data)
     data = [go.Scatter(x=df.iloc[:, 0], y=df['portfolio_value'])]
-    url = py.plot(data, filename='pandas/basic-line-plot')
-    return tls.get_embed(url)
+    str = off.plot({
+        "data": data,
+        "layout": go.Layout(title="Portfolio Performance")
+    })
+    return str
 
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
