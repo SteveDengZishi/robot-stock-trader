@@ -54,7 +54,12 @@ def handle_data(context, data):
     record(AAPL=data.current(symbol('AAPL'), 'price'))
 
 def setup_zipline():
-    capital = float(session['investment'][1:])
+	investment = session['investment'][1:-3]
+	capital = ""
+	for ch in investment:
+		if ch.isdigit():
+			capital+=ch
+    capital = float(capital)
     try:
         zipline.data.bundles.load('quantopian-quandl')
     except:
