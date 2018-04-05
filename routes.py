@@ -54,18 +54,18 @@ def handle_data(context, data):
     record(AAPL=data.current(symbol('AAPL'), 'price'))
 
 def setup_zipline():
-	investment = session['investment'][1:-3]
-	capital = ""
-	for ch in investment:
-		if ch.isdigit():
-			capital+=ch
-			
-	capital = float(capital)
+    investment = session['investment'][1:-3]
+    capital = ""
+    for ch in investment:
+    	if ch.isdigit():
+    		capital+=ch
+
+    capital = float(capital)
 
     try:
-        zipline.data.bundles.load('quantopian-quandl')
+    	zipline.data.bundles.load('quantopian-quandl')
     except:
-        zipline.data.bundles.ingest('quantopian-quandl')
+    	zipline.data.bundles.ingest('quantopian-quandl')
     start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
     end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
     perf = zipline.run_algorithm(start, end, initialize, capital, handle_data)
