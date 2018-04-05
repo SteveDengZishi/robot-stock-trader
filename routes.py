@@ -59,7 +59,9 @@ def setup_zipline():
 	for ch in investment:
 		if ch.isdigit():
 			capital+=ch
-    capital = float(capital)
+			
+	capital = float(capital)
+
     try:
         zipline.data.bundles.load('quantopian-quandl')
     except:
