@@ -72,10 +72,34 @@
 	</header>
 	<div class="usertable" id="usertable-1">
 		<div class="username" id="topleft">
-			<h>{{session['username']}}</h>
+			<h3>Welcome Back Trader</h3>
+			<h3>{{session['username']}}</h3>
+			<br>
+			<h3>Your Current Trading Preferences</h3>
+			<h3 id="risk">#</h3>
+			<script>
+				var risk="Hola";
+				if ({{session['risk_level']}} == 0){
+					risk = "Aggressive Strategy";
+				}
+				else if({{session['risk_level']}} == 1){
+					risk = "Normal Strategy";
+				}
+				else{
+					risk = "Conservative Strategy";
+				}
+				document.getElementById("risk").innerHTML = risk;
+			</script>
 		</div>
 		<div class="inv_amount" id="bottomleft">
-			<h>{{session['investment']}}</h>
+			<h4>Total Portfolio Value</h4>
+			<h4>{{session['investment']}}</h4>
+			<br>
+			<h4>Available Cash</h4>
+			<h4>{{session['investment']}}</h4>
+			<br>
+			<h4>Stocks Value</h4>
+			<h4>$ 0.00</h4>
 		</div>
 		<!--div class="image" id="image-1">
 		</div-->
