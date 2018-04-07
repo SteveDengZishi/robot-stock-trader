@@ -36,16 +36,16 @@
 			    <!-- Collect the nav links, forms, and other content for toggling -->
 			    <div class="collapse navbar-collapse" id="avbar-collapse-1">
 			      <ul class="nav navbar-nav">
-			        <li class="active"><a href="{{ url_for('signup') }}"><b>Preferences</b><span class="sr-only"></span></a></li>
-			        <li><a href="#"><b>Stock Recommendations</b></a></li>
+			        <li><a href="{{ url_for('signup') }}"><b>Preferences</b><span class="sr-only"></span></a></li>
+			        <li><a href="https://www.cnbc.com/"><b>Market News</b></a></li>
 			        <li class="dropdown">
 			          <a href="https://github.com/SteveDengZishi" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>Market Performance</b><span class="caret"></span></a>
 			          <ul class="dropdown-menu">
-			            <li><a href="#">Daily S&P 500 Best Performing Stocks</a></li>
+			          	<li><a href="http://markets.businessinsider.com/index/dow_jones">Dow Jones Live Chart</a></li>
 			            <li role="separator" class="divider"></li>
-			            <li><a href="#">Daily S&P 500 Worst Performing Stocks</a></li>
+			            <li><a href="http://markets.businessinsider.com/index/market-movers/s&p_500">Daily S&P 500 Best&Worst Performing Stocks</a></li>
 			            <li role="separator" class="divider"></li>
-			            <li><a href="#">Analyze by Sectors</a></li>
+			            <li><a href="https://www.bloomberg.com/markets/sectors">Sector Performance Bloomberg</a></li>
 			          </ul>
 			        </li>
 			      </ul>
@@ -56,7 +56,7 @@
 			        <button type="submit" class="btn btn-default">Submit</button>
 			      </form>
 			      <ul class="nav navbar-nav navbar-right">
-			        <li><a href="{{ url_for('logout') }}"><b>Logout</b></a></li>
+			        <li class="active"><a href="{{ url_for('logout') }}"><b>Logout</b></a></li>
 			        <li class="dropdown">
 			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>Contact Us</b><span class="caret"></span></a>
 			          <ul class="dropdown-menu">
@@ -72,11 +72,11 @@
 	</header>
 	<div class="usertable" id="usertable-1">
 		<div class="username" id="topleft">
-			<h3>Welcome Back Trader</h3>
-			<h3>{{session['username']}}</h3>
+			<h3><b>Welcome Back Trader</b></h3>
+			<h3><i>{{session['username']}}</i></h3>
 			<br>
-			<h3>Your Current Trading Preferences</h3>
-			<h3 id="risk">#</h3>
+			<h3><b>Your Current Trading Preferences</b></h3>
+			<h3><i id="risk">#</i></h3>
 			<script>
 				var risk="Hola";
 				if ({{session['risk_level']}} == 0){
@@ -92,14 +92,14 @@
 			</script>
 		</div>
 		<div class="inv_amount" id="bottomleft">
-			<h4>Total Portfolio Value</h4>
-			<h4>{{session['investment']}}</h4>
+			<h4><b>Total Portfolio Value</b></h4>
+			<h4><i>{{session['investment']}}</i></h4>
 			<br>
-			<h4>Available Cash</h4>
-			<h4>{{session['investment']}}</h4>
+			<h4><b>Available Cash</b></h4>
+			<h4><i>{{session['investment']}}</i></h4>
 			<br>
-			<h4>Stocks Value</h4>
-			<h4>$ 0.00</h4>
+			<h4><b>Stocks Value</b></h4>
+			<h4><i>$ 0.00</i></h4>
 		</div>
 		<!--div class="image" id="image-1">
 		</div-->
