@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 from forms import SignupForm
 from forms import LoginForm
 import numpy as np
@@ -9,6 +10,7 @@ from datetime import datetime
 from zipline.api import order, record, symbol
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 app.secret_key = "development-key"
 
@@ -86,7 +88,9 @@ def signup():
                 risk_level_int = 1
             if(risk_level == 'Safe'):
                 risk_level_int = 2
-            newUser = User(form.username.data, form.email.data, form.password.data, form.investment.data, risk_level_int)
+            password = form.password.data
+            hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
+            newUser = User(form.username.data, form.email.data, hashed_password, form.investment.data, risk_level_int)
             db.session.add(newUser)
             db.session.commit()
 
@@ -110,12 +114,14 @@ def login():
         userName = form.username.data
         password = form.password.data
         userLogin = User.query.filter_by(username=userName).first()
-        if(userLogin != None and userLogin.password == password):
-            session['username'] = userName
-            session['email'] = userLogin.email
-            session['investment'] = userLogin.inv_amount
-            session['risk_level'] = userLogin.risk_level
-            return redirect(url_for('portfolio'))
+        if(userLogin != None):
+            hashed_password = userLogin.password
+            if(bcrypt.check_password_hash(hashed_password, password)):
+                session['username'] = userName
+                session['email'] = userLogin.email
+                session['investment'] = userLogin.inv_amount
+                session['risk_level'] = userLogin.risk_level
+                return redirect(url_for('portfolio'))
         else:
             return redirect(url_for('login'))
 
