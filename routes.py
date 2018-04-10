@@ -41,6 +41,31 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+class Zipliner:
+    __instance = None
+
+    @staticmethod
+    def getInstance():
+        if Zipliner.__instance == None:
+            Zipliner()
+        prepare()
+        return Zipliner.__instance
+
+    def __init__(self):
+        if Zipliner.__instance != None:
+            raise Exception("should be singleton")
+        else:
+            Zipliner.__instance = self
+            zipline.data.bundles.ingest('quantopian-quandl')
+
+    def prepare():
+        zipline.data.bundles.load('quantopian-quandl')
+
+    def run(start, end, capital):
+        zipline.run_algorithm(start, end, initialize, capital, handle_data)
+
+
+
 @app.route("/portfolio", methods = ['GET', 'POST'])
 def portfolio():
     if request.method == 'POST':
@@ -59,13 +84,10 @@ def handle_data(context, data):
 
 def setup_zipline():
     capital = 1000000
-    try:
-        zipline.data.bundles.load('quantopian-quandl')
-    except:
-        zipline.data.bundles.ingest('quantopian-quandl')
+    zp = Zipliner.getInstance()
     start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
     end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
-    df = zipline.run_algorithm(start, end, initialize, capital, handle_data)
+    df = zp.run(start, end, capital)
     data = [go.Scatter(x=df.iloc[:, 0], y=df['portfolio_value'])]
     str = off.plot({
         "data": data,
