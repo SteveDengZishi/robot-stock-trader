@@ -5,6 +5,7 @@ flask-heroku==0.1.9
 Flask-Cors==3.0.2
 Flask-WTF==0.14.2
 Flask-SQLAlchemy==2.3.2
+Flask-Bcrypt==0.7.1
 gunicorn==19.7.1
 lxml==3.7.2
 matplotlib==2.0.2
