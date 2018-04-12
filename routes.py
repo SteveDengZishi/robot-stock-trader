@@ -44,6 +44,12 @@ class User(db.Model):
 class Zipliner:
     __instance = None
 
+    def prepare():
+        zipline.data.bundles.load('quantopian-quandl')
+
+    def run(start, end, capital):
+        zipline.run_algorithm(start, end, initialize, capital, handle_data)
+
     @staticmethod
     def getInstance():
         if Zipliner.__instance == None:
@@ -57,12 +63,6 @@ class Zipliner:
         else:
             Zipliner.__instance = self
             zipline.data.bundles.ingest('quantopian-quandl')
-
-    def prepare():
-        zipline.data.bundles.load('quantopian-quandl')
-
-    def run(start, end, capital):
-        zipline.run_algorithm(start, end, initialize, capital, handle_data)
 
 
 
