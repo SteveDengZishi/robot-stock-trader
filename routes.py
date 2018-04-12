@@ -90,16 +90,16 @@ def setup_zipline():
     #     "data": data,
     #     "layout": go.Layout(title="Portfolio Performance")
     # })
-    content = off.plot({
-        "data": [
+    content = off.plot(
+        data=[
             go.Scatter(x=[1, 2, 3, 4], y=[4, 1, 3, 7])
         ],
-        "layout": go.Layout(
-            title="hello world"
-        ),
-        "include_plotlyjs": False,
-        "output_type": "div"
-    })
+        # layout=go.Layout(
+        #     title='hello world'
+        # ),
+        # include_plotlyjs=False,
+        output_type='div'
+    )
     return content
 
 @app.route("/signup", methods = ['GET', 'POST'])
