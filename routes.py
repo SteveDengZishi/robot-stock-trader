@@ -80,26 +80,13 @@ def handle_data(context, data):
     record(AAPL=data.current(symbol('AAPL'), 'price'))
 
 def setup_zipline():
-    # capital = 1000000
-    # zp = Zipliner.getInstance()
-    # start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
-    # end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
-    # df = zp.run(start, end, capital)
-    # data = [go.Scatter(x=df.iloc[:, 0], y=df['portfolio_value'])]
-    # str = off.plot({
-    #     "data": data,
-    #     "layout": go.Layout(title="Portfolio Performance")
-    # })
-    content = off.plot(
-        [
-            go.Scatter(x=[1, 2, 3, 4], y=[4, 1, 3, 7])
-        ],
-        # layout=go.Layout(
-        #     title='hello world'
-        # ),
-        # include_plotlyjs=False,
-        output_type='div'
-    )
+    capital = 1000000
+    zp = Zipliner.getInstance()
+    start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
+    end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
+    df = zp.run(start, end, capital)
+    data = [go.Scatter(x=df.iloc[:, 0], y=df['portfolio_value'])]
+    content = off.plot(data, output_type='div')
     return content
 
 @app.route("/signup", methods = ['GET', 'POST'])
