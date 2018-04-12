@@ -54,7 +54,7 @@ class Zipliner:
     def getInstance():
         if Zipliner.__instance == None:
             Zipliner()
-        prepare()
+        self.prepare()
         return Zipliner.__instance
 
     def __init__(self):
