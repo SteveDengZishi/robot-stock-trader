@@ -45,7 +45,7 @@ class Zipliner:
     __instance = None
 
     def run(start, end, capital):
-        zipline.run_algorithm(start, end, initialize, capital, handle_data)
+        return zipline.run_algorithm(start, end, initialize, capital, handle_data)
 
     @staticmethod
     def getInstance():
