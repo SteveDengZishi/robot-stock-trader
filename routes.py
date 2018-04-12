@@ -8,6 +8,10 @@ import pandas as pd
 import zipline
 from datetime import datetime
 from zipline.api import order, record, symbol
+import plotly.plotly as py
+import plotly.graph_objs as go
+import plotly.offline as off
+import plotly.tools as tls
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -70,8 +74,10 @@ def setup_zipline():
     	zipline.data.bundles.ingest('quantopian-quandl')
     start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
     end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
-    perf = zipline.run_algorithm(start, end, initialize, capital, handle_data)
-    return perf.head().to_html()
+    df = zipline.run_algorithm(start, end, initialize, capital, handle_data)
+    data = [go.Scatter(x=df.columns[0], y=df['portfolio_value'])]
+    div_code = off.plot(data, include_plotlyjs=False, output_type='div')
+    return div_code
 
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
