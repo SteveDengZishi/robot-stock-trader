@@ -44,7 +44,7 @@ class User(db.Model):
 class Zipliner:
     __instance = None
 
-    def run(start, end, capital):
+    def run(self, start, end, capital):
         return zipline.run_algorithm(start, end, initialize, capital, handle_data)
 
     @staticmethod
