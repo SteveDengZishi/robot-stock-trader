@@ -85,7 +85,8 @@ def setup_zipline():
     start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
     end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
     df = zp.run(start, end, capital)
-    data = [go.Scatter(x=df.iloc[:, 0], y=df['portfolio_value'])]
+    df_data = df.iloc[:, 0]
+    data = [go.Scatter(x=df['AAPL'], y=df['portfolio_value'])]
     content = off.plot(data, output_type='div')
     return content
 
