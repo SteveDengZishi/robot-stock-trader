@@ -1,2 +1,6 @@
 .DS_Store
 __pycache__
+build.sh
+shove.sh
+deploy.sh
+logs.sh

@@ -43,13 +43,35 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+class Zipliner:
+    __instance = None
+
+    def run(self, start, end, capital):
+        return zipline.run_algorithm(start, end, initialize, capital, handle_data)
+
+    @staticmethod
+    def getInstance():
+        if Zipliner.__instance == None:
+            Zipliner()
+        zipline.data.bundles.load('quantopian-quandl')
+        return Zipliner.__instance
+
+    def __init__(self):
+        if Zipliner.__instance != None:
+            raise Exception("should be singleton")
+        else:
+            Zipliner.__instance = self
+            zipline.data.bundles.ingest('quantopian-quandl')
+
+
+
 @app.route("/portfolio", methods = ['GET', 'POST'])
 def portfolio():
     if request.method == 'POST':
         return "Under construction"
     else:
-        perfhead = setup_zipline()
-        return render_template("portfolio.html", perfhead=perfhead)
+        content = setup_zipline()
+        return render_template("portfolio.html", content=content)
 
 
 def initialize(context):
@@ -67,17 +89,13 @@ def setup_zipline():
     		capital+=ch
 
     capital = float(capital)
-
-    try:
-    	zipline.data.bundles.load('quantopian-quandl')
-    except:
-    	zipline.data.bundles.ingest('quantopian-quandl')
+    zp = Zipliner.getInstance()
     start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
     end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
-    df = zipline.run_algorithm(start, end, initialize, capital, handle_data)
+    df = zp.run(start, end, capital)
     data = [go.Scatter(x=df.columns[0], y=df['portfolio_value'])]
-    div_code = off.plot(data, include_plotlyjs=False, output_type='div')
-    return div_code
+    content = off.plot(data, output_type='div')
+    return content
 
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
