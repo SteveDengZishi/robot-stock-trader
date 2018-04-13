@@ -53,7 +53,10 @@ class Zipliner:
     def getInstance():
         if Zipliner.__instance == None:
             Zipliner()
-        zipline.data.bundles.load('quantopian-quandl')
+        try:
+            zipline.data.bundles.load('quantopian-quandl')
+        except:
+            zipline.data.bundles.ingest('quantopian-quandl')
         return Zipliner.__instance
 
     def __init__(self):
