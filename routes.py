@@ -73,8 +73,10 @@ def portfolio():
     if request.method == 'POST':
         return "Under construction"
     else:
-        content = setup_zipline()
-        return render_template("portfolio.html", content=content)
+        df = setup_zipline()
+        contentP = plot_portfolio(df)
+        contentS = plot_stock(df)
+        return render_template("portfolio.html", contentP=contentP, contentS=contentS)
 
 
 def initialize(context):
@@ -96,7 +98,15 @@ def setup_zipline():
     start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
     end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
     df = zp.run(start, end, capital)
+    return df
+
+def plot_portfolio(df):
     data = [go.Scatter(x=df.columns[0], y=df['portfolio_value'])]
+    content = off.plot(data, output_type='div')
+    return content
+
+def plot_stock(df):
+    data = [go.Scatter(x=df.columns[0], y=df['AAPL'])]
     content = off.plot(data, output_type='div')
     return content
 
