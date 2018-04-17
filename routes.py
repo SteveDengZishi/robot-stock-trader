@@ -7,8 +7,18 @@ import numpy as np
 import pandas as pd
 import zipline
 from datetime import datetime
-from zipline.api import order_target, record, symbol
+from six import viewkeys
+from zipline.api import (
+    attach_pipeline,
+    date_rules,
+    order_target_percent,
+    pipeline_output,
+    record,
+    schedule_function,
+)
 from zipline.finance import commission, slippage
+from zipline.pipeline import Pipeline
+from zipline.pipeline.factors import RSI
 import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.offline as off
