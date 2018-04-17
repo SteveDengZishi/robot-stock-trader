@@ -165,8 +165,8 @@ def setup_zipline():
 
     capital = float(capital)
     zp = Zipliner.getInstance()
-    start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
-    end = pd.to_datetime('2015-04-01').tz_localize('US/Eastern')
+    start = pd.to_datetime('2016-01-01').tz_localize('US/Eastern')
+    end = pd.to_datetime('2016-08-01').tz_localize('US/Eastern')
     df = zp.run(start, end, capital)
     return df
 
@@ -183,7 +183,7 @@ def plot_portfolio(df):
         line = dict(color = ('rgb(22, 96, 167)'), width = 1)
     )
 
-    layout = dict(title = 'Portfolio Value 2015-2016',
+    layout = dict(title = 'Portfolio Value 2016',
               xaxis = dict(title = 'Days Since 1/1/2015'),
               yaxis = dict(title = 'Net Value (USD)'),
              )
@@ -206,7 +206,7 @@ def plot_returns(df):
         line = dict(color = ('rgb(205, 12, 24)'), width = 1)
     )
 
-    layout = dict(title = 'Portfolio Period Returns 2015-2016',
+    layout = dict(title = 'Portfolio Period Returns 2016',
               xaxis = dict(title = 'Days Since 1/1/2015'),
               yaxis = dict(title = 'Returns (%)'),
              )
