@@ -48,7 +48,13 @@ class Zipliner:
     __instance = None
 
     def run(self, start, end, capital):
-        return zipline.run_algorithm(start, end, initialize, capital, handle_data)
+        return zipline.run_algorithm(
+            start=start,
+            end=end,
+            initialize=initialize,
+            capital_base=capital,
+            before_trading_start=before_trading_start
+        )
 
     @staticmethod
     def getInstance():
@@ -79,10 +85,53 @@ def portfolio():
         contentS = plot_returns(df)
         return render_template("portfolio.html", contentP=contentP, contentS=contentS)
 
+def make_pipeline():
+    rsi = RSI()
+    return Pipeline(
+        columns={
+            'longs': rsi.top(3),
+            'shorts': rsi.bottom(3),
+        },
+    )
+
+
+def rebalance(context, data):
+
+    # Pipeline data will be a dataframe with boolean columns named 'longs' and
+    # 'shorts'.
+    pipeline_data = context.pipeline_data
+    all_assets = pipeline_data.index
+
+    longs = all_assets[pipeline_data.longs]
+    shorts = all_assets[pipeline_data.shorts]
+
+    record(universe_size=len(all_assets))
+
+    # Build a 2x-leveraged, equal-weight, long-short portfolio.
+    one_third = 1.0 / 3.0
+    for asset in longs:
+        order_target_percent(asset, one_third)
+
+    for asset in shorts:
+        order_target_percent(asset, -one_third)
+
+    # Remove any assets that should no longer be in our portfolio.
+    portfolio_assets = longs | shorts
+    positions = context.portfolio.positions
+    for asset in viewkeys(positions) - set(portfolio_assets):
+        # This will fail if the asset was removed from our portfolio because it
+        # was delisted.
+        if data.can_trade(asset):
+            order_target_percent(asset, 0)
+
 
 def initialize(context):
-    context.sym = symbol('AAPL')
-    context.i = 0
+    attach_pipeline(make_pipeline(), 'my_pipeline')
+
+    # Rebalance each day.  In daily mode, this is equivalent to putting
+    # `rebalance` in our handle_data, but in minute mode, it's equivalent to
+    # running at the start of the day each day.
+    schedule_function(rebalance, date_rules.every_day())
 
     # Explicitly set the commission/slippage to the "old" value until we can
     # rebuild example data.
@@ -92,30 +141,8 @@ def initialize(context):
     context.set_slippage(slippage.VolumeShareSlippage())
 
 
-def handle_data(context, data):
-    # Skip first 300 days to get full windows
-    context.i += 1
-    if context.i < 300:
-        return
-
-    # Compute averages
-    # history() has to be called with the same params
-    # from above and returns a pandas dataframe.
-    short_mavg = data.history(context.sym, 'price', 100, '1d').mean()
-    long_mavg = data.history(context.sym, 'price', 300, '1d').mean()
-
-    # Trading logic
-    if short_mavg > long_mavg:
-        # order_target orders as many shares as needed to
-        # achieve the desired number of shares.
-        order_target(context.sym, 100)
-    elif short_mavg < long_mavg:
-        order_target(context.sym, 0)
-
-    # Save values for later inspection
-    record(AAPL=data.current(context.sym, "price"),
-           short_mavg=short_mavg,
-           long_mavg=long_mavg)
+def before_trading_start(context, data):
+    context.pipeline_data = pipeline_output('my_pipeline')
 
 def setup_zipline():
     investment = session['investment'][1:-3]
