@@ -126,7 +126,8 @@ def plot_returns(df):
              )
 
     data = [trace0, trace1]
-    content = off.plot(data, output_type='div', layout=layout)
+    fig = dict(data=data, layout=layout)
+    content = off.plot(fig, output_type='div')
     return content
 
 @app.route("/signup", methods = ['GET', 'POST'])
