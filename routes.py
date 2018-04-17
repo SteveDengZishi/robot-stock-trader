@@ -34,6 +34,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://skqtsiamfhxtft:32d113d4b722c
 # heroku = Heroku(app)
 db = SQLAlchemy(app)
 
+
 # Create our database model
 class User(db.Model):
     __tablename__ = "users"
@@ -164,7 +165,7 @@ def setup_zipline():
     capital = float(capital)
     zp = Zipliner.getInstance()
     start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
-    end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
+    end = pd.to_datetime('2015-04-01').tz_localize('US/Eastern')
     df = zp.run(start, end, capital)
     return df
 
