@@ -64,6 +64,7 @@ class Zipliner:
             end=end,
             initialize=initialize,
             capital_base=capital,
+            handle_data=None,
             before_trading_start=before_trading_start
         )
 
