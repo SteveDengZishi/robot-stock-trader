@@ -108,16 +108,16 @@ def plot_portfolio(df):
 def plot_returns(df):
     trace0 = go.Scatter(
         x=df.columns[0],
-        y=df['algorithm_period_return'],
-        name='Algo Return',
-        line = dict(color = ('rgb(205, 12, 24)'), width = 4)
+        y=df['algorithm_period_return']*100,
+        name='Algo Return (%)',
+        line = dict(color = ('rgb(22, 96, 167)'), width = 1)
     )
-    
+
     trace1 = go.Scatter(
         x=df.columns[0],
-        y=df['benchmark_period_return'],
-        name='Benchmark Return',
-        line = dict(color = ('rgb(22, 96, 167)'), width = 4)
+        y=df['benchmark_period_return']*100,
+        name='Benchmark Return (%)',
+        line = dict(color = ('rgb(205, 12, 24)'), width = 1)
     )
 
     data = [trace0, trace1]
