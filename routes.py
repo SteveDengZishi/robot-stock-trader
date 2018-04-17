@@ -100,10 +100,26 @@ def setup_zipline():
     df = zp.run(start, end, capital)
     return df
 
-def plot_portfolio(df):
-    data = [go.Scatter(x=df.columns[0], y=df['portfolio_value'])]
-    content = off.plot(data, output_type='div')
+def get_fig(data, layout):
+    fig = dict(data=data, layout=layout)
+    content = off.plot(fig, output_type='div')
     return content
+
+def plot_portfolio(df):
+    trace0 = go.Scatter(
+        x=df.columns[0],
+        y=df['portfolio_value'],
+        name='Current Portfolio',
+        line = dict(color = ('rgb(22, 96, 167)'), width = 1)
+    )
+
+    layout = dict(title = 'Portfolio Value 2015-2016',
+              xaxis = dict(title = 'Days Since 1/1/2015'),
+              yaxis = dict(title = 'Net Value (USD)'),
+             )
+
+    data = [trace0]
+    return get_fig(data, layout)
 
 def plot_returns(df):
     trace0 = go.Scatter(
@@ -120,15 +136,13 @@ def plot_returns(df):
         line = dict(color = ('rgb(205, 12, 24)'), width = 1)
     )
 
-    layout = dict(title = 'Portfolio Period Returns 2015-2017',
+    layout = dict(title = 'Portfolio Period Returns 2015-2016',
               xaxis = dict(title = 'Days Since 1/1/2015'),
               yaxis = dict(title = 'Returns (%)'),
              )
 
     data = [trace0, trace1]
-    fig = dict(data=data, layout=layout)
-    content = off.plot(fig, output_type='div')
-    return content
+    return get_fig(data, layout)
 
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
