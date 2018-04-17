@@ -109,19 +109,24 @@ def plot_returns(df):
     trace0 = go.Scatter(
         x=df.columns[0],
         y=df['algorithm_period_return']*100,
-        name='Algo Return (%)',
+        name='Algorithm',
         line = dict(color = ('rgb(22, 96, 167)'), width = 1)
     )
 
     trace1 = go.Scatter(
         x=df.columns[0],
         y=df['benchmark_period_return']*100,
-        name='Benchmark Return (%)',
+        name='IEX Benchmark',
         line = dict(color = ('rgb(205, 12, 24)'), width = 1)
     )
 
+    layout = dict(title = 'Portfolio Period Returns 2015-2017',
+              xaxis = dict(title = 'Days Since 1/1/2015'),
+              yaxis = dict(title = 'Returns (%)'),
+             )
+
     data = [trace0, trace1]
-    content = off.plot(data, output_type='div')
+    content = off.plot(data, output_type='div', layout=layout)
     return content
 
 @app.route("/signup", methods = ['GET', 'POST'])
