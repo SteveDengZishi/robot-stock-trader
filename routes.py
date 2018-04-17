@@ -75,7 +75,7 @@ def portfolio():
     else:
         df = setup_zipline()
         contentP = plot_portfolio(df)
-        contentS = plot_stock(df)
+        contentS = plot_returns(df)
         return render_template("portfolio.html", contentP=contentP, contentS=contentS)
 
 
@@ -105,8 +105,22 @@ def plot_portfolio(df):
     content = off.plot(data, output_type='div')
     return content
 
-def plot_stock(df):
-    data = [go.Scatter(x=df.columns[0], y=df['AAPL'])]
+def plot_returns(df):
+    trace0 = go.Scatter(
+        x=df.columns[0],
+        y=df['algorithm_period_return'],
+        name='Algo Return',
+        line = dict(color = ('rgb(205, 12, 24)'), width = 4)
+    )
+    
+    trace1 = go.Scatter(
+        x=df.columns[0],
+        y=df['benchmark_period_return'],
+        name='Benchmark Return',
+        line = dict(color = ('rgb(22, 96, 167)'), width = 4)
+    )
+
+    data = [trace0, trace1]
     content = off.plot(data, output_type='div')
     return content
 
