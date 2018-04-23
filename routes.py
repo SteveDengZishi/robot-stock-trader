@@ -95,8 +95,8 @@ def setup_zipline():
 
     capital = float(capital)
     zp = Zipliner.getInstance()
-    start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
-    end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
+    start = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
+    end = pd.to_datetime('2017-05-01').tz_localize('US/Eastern')
     df = zp.run(start, end, capital)
     return df
 
