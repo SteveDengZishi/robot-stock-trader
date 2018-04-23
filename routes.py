@@ -100,6 +100,24 @@ def setup_zipline():
     content = off.plot(data, output_type='div')
     return content
 
+@app.route("/changePref", methods = ['GET', 'POST'])
+def changePref():
+	form = SignupForm();
+	if request.method == 'POST':
+		if form.validate() == False:
+			return render_template("changePref.html", form=form)
+		else:
+			risk_level = form.riskLevel.data
+			if(risk_level == 'Volatile'):
+				risk_level_int = 0
+			elif(risk_level == 'Moderate'):
+				risk_level_int = 1
+			elif(risk_level == 'Safe'):
+				risk_level_int = 2
+			#update the database info for the user and launch updated session
+	else:
+		return render_template("changePref.html", form=form)
+
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
     form = SignupForm();
@@ -111,9 +129,9 @@ def signup():
             risk_level = form.riskLevel.data
             if(risk_level == 'Volatile'):
                 risk_level_int = 0
-            if(risk_level == 'Moderate'):
+            elif(risk_level == 'Moderate'):
                 risk_level_int = 1
-            if(risk_level == 'Safe'):
+            elif(risk_level == 'Safe'):
                 risk_level_int = 2
             password = form.password.data
             hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
