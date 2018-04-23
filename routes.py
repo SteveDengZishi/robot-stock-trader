@@ -100,6 +100,22 @@ def setup_zipline():
     content = off.plot(data, output_type='div')
     return content
 
+@app.route("/changePref", methods = ['GET', 'POST'])
+def changePref():
+	form = SignupForm();
+
+    if request.method == 'POST':
+        if form.validate() == False:
+            return render_template("changePref.html", form=form)
+        else:
+            risk_level = form.riskLevel.data
+            if(risk_level == 'Volatile'):
+                risk_level_int = 0
+            if(risk_level == 'Moderate'):
+                risk_level_int = 1
+            if(risk_level == 'Safe'):
+                risk_level_int = 2
+
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
     form = SignupForm();
