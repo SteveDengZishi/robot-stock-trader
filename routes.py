@@ -116,6 +116,8 @@ def changePref():
             if(risk_level == 'Safe'):
                 risk_level_int = 2
 
+            #update the database info for the user and launch updated session
+
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
     form = SignupForm();
