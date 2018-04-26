@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from forms import SignupForm
-from forms import LoginForm
+from forms import SignupForm, LoginForm, UpdateForm
 import numpy as np
 import pandas as pd
 import zipline
@@ -102,7 +101,7 @@ def setup_zipline():
 
 @app.route("/changePref", methods = ['GET', 'POST'])
 def changePref():
-    form = SignupForm();
+    form = UpdateForm();
     if request.method == 'POST':
         if form.validate() == False:
             return render_template("changePref.html", form=form)
@@ -125,7 +124,6 @@ def changePref():
             session['investment'] = change_user.inv_amount
             session['risk_level'] = change_user.risk_level
             return redirect(url_for('portfolio'))
-            #update the database info for the user and launch updated session
     else:
         return render_template("changePref.html", form=form)
 
