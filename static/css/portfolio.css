@@ -24,7 +24,7 @@ img[class=container]{
 	position: absolute;
 	display: inline-block;
 	width:30%;
-	height:40%;
+	height:42%;
 	top:7%;
 	left:10%;
 	padding: 2%;
@@ -37,8 +37,8 @@ img[class=container]{
 	position: absolute;
 	display: inline-block;
 	width:30%;
-	height:40%;
-	top:50%;
+	height:42%;
+	top:52%;
 	left:10%;
 	padding: 2%;
 	margin-top: 2%;
@@ -49,7 +49,7 @@ img[class=container]{
 #topright{
 	position: absolute;
 	display: inline-block;
-	top: 7%;
+	top: 10%;
 	left: 42%;
 	background-color: white
 }
@@ -59,7 +59,7 @@ img[class=container]{
 	display: inline-block;
 	width: 50%;
 	height: 25%;
-	top: 70%;
+	top: 72%;
 	left: 42%;
 	background-color: white
 }
