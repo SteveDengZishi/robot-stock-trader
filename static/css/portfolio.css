@@ -54,6 +54,15 @@ img[class=container]{
 	background-color: white
 }
 
+#bottomright{
+	position: absolute;
+	display: inline-block;
+	width: 50%;
+	height: 25%;
+	top: 70%;
+	left: 42%;
+	background-color: white
+}
 
 section a{
 	font-family: fantasy;
