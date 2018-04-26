@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from forms import SignupForm
-from forms import LoginForm
+from forms import SignupForm, LoginForm, UpdateForm
 import numpy as np
 import pandas as pd
 import zipline
