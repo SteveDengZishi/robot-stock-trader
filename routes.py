@@ -102,7 +102,7 @@ def setup_zipline():
 
 @app.route("/changePref", methods = ['GET', 'POST'])
 def changePref():
-    form = SignupForm();
+    form = UpdateForm();
     if request.method == 'POST':
         if form.validate() == False:
             return render_template("changePref.html", form=form)
