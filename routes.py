@@ -25,80 +25,80 @@ db = SQLAlchemy(app)
 
 # Create our database model
 class User(db.Model):
-    __tablename__ = "users"
-    uid = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100))
-    email = db.Column(db.String(120), unique=True)
-    password = db.Column(db.String(100))
-    inv_amount = db.Column(db.Integer)
-    risk_level = db.Column(db.Integer)
+	__tablename__ = "users"
+	uid = db.Column(db.Integer, primary_key=True)
+	username = db.Column(db.String(100))
+	email = db.Column(db.String(120), unique=True)
+	password = db.Column(db.String(100))
+	inv_amount = db.Column(db.Integer)
+	risk_level = db.Column(db.Integer)
 
-    def __init__(self, username, email, password, inv_amount, risk_level):
-        self.username = username
-        self.email = email
-        self.password = password
-        self.inv_amount = inv_amount
-        self.risk_level = risk_level
+	def __init__(self, username, email, password, inv_amount, risk_level):
+		self.username = username
+		self.email = email
+		self.password = password
+		self.inv_amount = inv_amount
+		self.risk_level = risk_level
 
-    def __repr__(self):
-        return '<User %r>' % self.username
+	def __repr__(self):
+		return '<User %r>' % self.username
 
 class Zipliner:
-    __instance = None
+	__instance = None
 
-    def run(self, start, end, capital):
-        return zipline.run_algorithm(start, end, initialize, capital, handle_data)
+	def run(self, start, end, capital):
+		return zipline.run_algorithm(start, end, initialize, capital, handle_data)
 
-    @staticmethod
-    def getInstance():
-        if Zipliner.__instance == None:
-            Zipliner()
-        try:
-            zipline.data.bundles.load('quantopian-quandl')
-        except:
-            zipline.data.bundles.ingest('quantopian-quandl')
-        return Zipliner.__instance
+	@staticmethod
+	def getInstance():
+		if Zipliner.__instance == None:
+			Zipliner()
+		try:
+			zipline.data.bundles.load('quantopian-quandl')
+		except:
+			zipline.data.bundles.ingest('quantopian-quandl')
+		return Zipliner.__instance
 
-    def __init__(self):
-        if Zipliner.__instance != None:
-            raise Exception("should be singleton")
-        else:
-            Zipliner.__instance = self
-            zipline.data.bundles.ingest('quantopian-quandl')
+	def __init__(self):
+		if Zipliner.__instance != None:
+			raise Exception("should be singleton")
+		else:
+			Zipliner.__instance = self
+			zipline.data.bundles.ingest('quantopian-quandl')
 
 
 
 @app.route("/portfolio", methods = ['GET', 'POST'])
 def portfolio():
-    if request.method == 'POST':
-        return "Under construction"
-    else:
-        content = setup_zipline()
-        return render_template("portfolio.html", content=content)
+	if request.method == 'POST':
+		return "Under construction"
+	else:
+		content = setup_zipline()
+		return render_template("portfolio.html", content=content)
 
 
 def initialize(context):
-    pass
+	pass
 
 def handle_data(context, data):
-    order(symbol('AAPL'), 10)
-    record(AAPL=data.current(symbol('AAPL'), 'price'))
+	order(symbol('AAPL'), 10)
+	record(AAPL=data.current(symbol('AAPL'), 'price'))
 
 def setup_zipline():
-    investment = session['investment'][1:-3]
-    capital = ""
-    for ch in investment:
-    	if ch.isdigit():
-    		capital+=ch
+	investment = session['investment'][1:-3]
+	capital = ""
+	for ch in investment:
+		if ch.isdigit():
+			capital+=ch
 
-    capital = float(capital)
-    zp = Zipliner.getInstance()
-    start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
-    end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
-    df = zp.run(start, end, capital)
-    data = [go.Scatter(x=df.columns[0], y=df['portfolio_value'])]
-    content = off.plot(data, output_type='div')
-    return content
+	capital = float(capital)
+	zp = Zipliner.getInstance()
+	start = pd.to_datetime('2015-01-01').tz_localize('US/Eastern')
+	end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
+	df = zp.run(start, end, capital)
+	data = [go.Scatter(x=df.columns[0], y=df['portfolio_value'])]
+	content = off.plot(data, output_type='div')
+	return content
 
 @app.route("/changePref", methods = ['GET', 'POST'])
 def changePref():
@@ -114,64 +114,75 @@ def changePref():
 				risk_level_int = 1
 			elif(risk_level == 'Safe'):
 				risk_level_int = 2
+			userName = session['username']
+            change_user = User.query.filter_by(username=userName).first()
+            change_user.inv_amount = form.investment.data
+            change_user.risk_level = risk_level_int
+            db.session.commit()
+            change_user = User.query.filter_by(username=userName).first()
+            session['username'] = change_user.username
+            session['email'] = change_user.email
+            session['investment'] = change_user.inv_amount
+            session['risk_level'] = change_user.risk_level
+            return redirect(url_for('portfolio'))
 			#update the database info for the user and launch updated session
 	else:
 		return render_template("changePref.html", form=form)
 
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
-    form = SignupForm();
+	form = SignupForm();
 
-    if request.method == 'POST':
-        if form.validate() == False:
-            return render_template("signup.html", form=form)
-        else:
-            risk_level = form.riskLevel.data
-            if(risk_level == 'Volatile'):
-                risk_level_int = 0
-            elif(risk_level == 'Moderate'):
-                risk_level_int = 1
-            elif(risk_level == 'Safe'):
-                risk_level_int = 2
-            password = form.password.data
-            hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
-            newUser = User(form.username.data, form.email.data, hashed_password, form.investment.data, risk_level_int)
-            db.session.add(newUser)
-            db.session.commit()
+	if request.method == 'POST':
+		if form.validate() == False:
+			return render_template("signup.html", form=form)
+		else:
+			risk_level = form.riskLevel.data
+			if(risk_level == 'Volatile'):
+				risk_level_int = 0
+			elif(risk_level == 'Moderate'):
+				risk_level_int = 1
+			elif(risk_level == 'Safe'):
+				risk_level_int = 2
+			password = form.password.data
+			hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
+			newUser = User(form.username.data, form.email.data, hashed_password, form.investment.data, risk_level_int)
+			db.session.add(newUser)
+			db.session.commit()
 
-            session['username'] = newUser.username
-            session['email'] = newUser.email
-            session['investment'] = newUser.inv_amount
-            session['risk_level'] = newUser.risk_level
-            return redirect(url_for('portfolio'))
-    else:
-        return render_template("signup.html", form=form)
+			session['username'] = newUser.username
+			session['email'] = newUser.email
+			session['investment'] = newUser.inv_amount
+			session['risk_level'] = newUser.risk_level
+			return redirect(url_for('portfolio'))
+	else:
+		return render_template("signup.html", form=form)
 
 @app.route("/logout")
 def logout():
-    session.pop("username", None)
-    return redirect(url_for('login'))
+	session.pop("username", None)
+	return redirect(url_for('login'))
 
 @app.route("/", methods = ['GET','POST'])
 def login():
-    form = LoginForm();
-    if request.method == 'POST':
-        userName = form.username.data
-        password = form.password.data
-        userLogin = User.query.filter_by(username=userName).first()
-        if(userLogin != None):
-            hashed_password = userLogin.password
-            if(bcrypt.check_password_hash(hashed_password, password)):
-                session['username'] = userName
-                session['email'] = userLogin.email
-                session['investment'] = userLogin.inv_amount
-                session['risk_level'] = userLogin.risk_level
-                return redirect(url_for('portfolio'))
-        else:
-            return redirect(url_for('login'))
+	form = LoginForm();
+	if request.method == 'POST':
+		userName = form.username.data
+		password = form.password.data
+		userLogin = User.query.filter_by(username=userName).first()
+		if(userLogin != None):
+			hashed_password = userLogin.password
+			if(bcrypt.check_password_hash(hashed_password, password)):
+				session['username'] = userName
+				session['email'] = userLogin.email
+				session['investment'] = userLogin.inv_amount
+				session['risk_level'] = userLogin.risk_level
+				return redirect(url_for('portfolio'))
+		else:
+			return redirect(url_for('login'))
 
-    else:
-        return render_template("login.html", form=form)
+	else:
+		return render_template("login.html", form=form)
 
 if __name__ == "__main__":
 	app.run(debug=True)
