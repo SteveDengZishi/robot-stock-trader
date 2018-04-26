@@ -62,6 +62,7 @@ img[class=container]{
 	top: 72%;
 	left: 42%;
 	background-color: white
+	overflow-y: scroll;
 }
 
 section a{
