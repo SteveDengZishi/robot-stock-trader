@@ -88,8 +88,8 @@ def setup_zipline():
     investment = session['investment'][1:-3]
     capital = ""
     for ch in investment:
-    	if ch.isdigit():
-    		capital+=ch
+        if ch.isdigit():
+            capital+=ch
 
     capital = float(capital)
     zp = Zipliner.getInstance()
@@ -102,21 +102,32 @@ def setup_zipline():
 
 @app.route("/changePref", methods = ['GET', 'POST'])
 def changePref():
-	form = SignupForm();
-	if request.method == 'POST':
-		if form.validate() == False:
-			return render_template("changePref.html", form=form)
-		else:
-			risk_level = form.riskLevel.data
-			if(risk_level == 'Volatile'):
-				risk_level_int = 0
-			elif(risk_level == 'Moderate'):
-				risk_level_int = 1
-			elif(risk_level == 'Safe'):
-				risk_level_int = 2
-			#update the database info for the user and launch updated session
-	else:
-		return render_template("changePref.html", form=form)
+    form = SignupForm();
+    if request.method == 'POST':
+        if form.validate() == False:
+            return render_template("changePref.html", form=form)
+        else:
+            risk_level = form.riskLevel.data
+            if(risk_level == 'Volatile'):
+                risk_level_int = 0
+            elif(risk_level == 'Moderate'):
+                risk_level_int = 1
+            elif(risk_level == 'Safe'):
+                risk_level_int = 2
+            userName = session['username']
+            change_user = User.query.filter_by(username=userName).first()
+            change_user.inv_amount = form.investment.data
+            change_user.risk_level = risk_level_int
+            db.session.commit()
+            change_user = User.query.filter_by(username=userName).first()
+            session['username'] = change_user.username
+            session['email'] = change_user.email
+            session['investment'] = change_user.inv_amount
+            session['risk_level'] = change_user.risk_level
+            return redirect(url_for('portfolio'))
+            #update the database info for the user and launch updated session
+    else:
+        return render_template("changePref.html", form=form)
 
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
@@ -174,4 +185,4 @@ def login():
         return render_template("login.html", form=form)
 
 if __name__ == "__main__":
-	app.run(debug=True)
+    app.run(debug=True)
