@@ -124,7 +124,6 @@ def changePref():
             session['investment'] = change_user.inv_amount
             session['risk_level'] = change_user.risk_level
             return redirect(url_for('portfolio'))
-            #update the database info for the user and launch updated session
     else:
         return render_template("changePref.html", form=form)
 
