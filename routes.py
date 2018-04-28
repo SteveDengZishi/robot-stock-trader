@@ -92,10 +92,21 @@ def portfolio():
     if request.method == 'POST':
         return "Under construction"
     else:
+        # df = setup_zipline()
+        # contentP = plot_portfolio(df)
+        # contentS = plot_returns(df)
+        # return render_template("portfolio.html", contentP=contentP, contentS=contentS)
+        return render_template("portfolio.html")
+
+@app.route("/backtest", methods = ['GET', 'POST'])
+def portfolio():
+    if request.method == 'POST':
+        return "Under construction"
+    else:
         df = setup_zipline()
         contentP = plot_portfolio(df)
         contentS = plot_returns(df)
-        return render_template("portfolio.html", contentP=contentP, contentS=contentS)
+        return render_template("backtest.html", contentP=contentP, contentS=contentS)
 
 def make_pipeline():
     rsi = RSI()
