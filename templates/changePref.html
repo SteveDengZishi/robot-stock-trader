@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+<title>Trader Preferences</title>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+{% endblock %}
+
+{% block content %}
+	<div class="login-page">
+	  <div class="form">
+	    <form class="login-form" action="/changePref" method="POST">
+	    	{{ form.hidden_tag() }}
+	    	<h3>Trader Preferences Update</h3>
+			<div>
+	      		<h5>{{ form.investment.label }}</h5>
+
+	      		{% if form.investment.errors %}
+	      			{% for error in form.investment.errors %}
+	      				<p id="error-message">{{ error }}</p>
+	      			{% endfor %}
+	      		{% endif %}
+
+	      		{{ form.investment(placeholder="Updated Investment Amount") }}
+	      	</div>
+
+	      	<div>
+	      		<h5>{{ form.riskLevel.label }}</h5>
+	      		{{ form.riskLevel }}
+	      	</div>
+
+	      	<br>
+
+	      	<button type="submit">Update Preferences</button>
+	    </form>
+	  </div>
+	</div>
+{% endblock %}

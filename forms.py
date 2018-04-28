@@ -16,3 +16,8 @@ class SignupForm(FlaskForm):
 class LoginForm(FlaskForm):
 	username = StringField('Username')
 	password = PasswordField('Enter your password')
+
+class UpdateForm(FlaskForm):
+	risks = [('Volatile', 'Volatile, High risk with high reward'),('Moderate', 'Moderate, Move at a relatively steady pace'),('Safe', 'Safe, Move little and minimize risk')]
+	investment = IntegerField('Update your investment in USD', validators=[DataRequired(), NumberRange(min=100)])
+	riskLevel = SelectField('Update the level of risk', choices=risks)

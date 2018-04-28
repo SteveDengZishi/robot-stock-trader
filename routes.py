@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from forms import SignupForm
-from forms import LoginForm
+from forms import SignupForm, LoginForm, UpdateForm
 import numpy as np
 import pandas as pd
 import zipline
@@ -171,8 +170,8 @@ def setup_zipline():
     investment = session['investment'][1:-3]
     capital = ""
     for ch in investment:
-    	if ch.isdigit():
-    		capital+=ch
+        if ch.isdigit():
+            capital+=ch
 
     capital = float(capital)
     zp = Zipliner.getInstance()
@@ -236,9 +235,9 @@ def signup():
             risk_level = form.riskLevel.data
             if(risk_level == 'Volatile'):
                 risk_level_int = 0
-            if(risk_level == 'Moderate'):
+            elif(risk_level == 'Moderate'):
                 risk_level_int = 1
-            if(risk_level == 'Safe'):
+            elif(risk_level == 'Safe'):
                 risk_level_int = 2
             password = form.password.data
             hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
@@ -281,4 +280,4 @@ def login():
         return render_template("login.html", form=form)
 
 if __name__ == "__main__":
-	app.run(debug=True)
+    app.run(debug=True)
