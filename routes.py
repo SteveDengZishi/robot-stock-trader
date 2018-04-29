@@ -6,22 +6,12 @@ import numpy as np
 import pandas as pd
 import zipline
 from datetime import datetime
-from six import viewkeys
-from zipline.api import (
-    attach_pipeline,
-    date_rules,
-    order_target_percent,
-    pipeline_output,
-    record,
-    schedule_function,
-)
-from zipline.finance import commission, slippage
-from zipline.pipeline import Pipeline
-from zipline.pipeline.factors import RSI
 import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.offline as off
 import plotly.tools as tls
+import Algorithms.learn_reversion as mid_risk
+import Algorithms.momentum_based as low_risk
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -57,15 +47,43 @@ class User(db.Model):
 class Zipliner:
     __instance = None
 
-    def run(self, start, end, capital):
-        return zipline.run_algorithm(
-            start=start,
-            end=end,
-            initialize=initialize,
-            capital_base=capital,
-            handle_data=None,
-            before_trading_start=before_trading_start
-        )
+    def run(self, capital, risk_level, quarter):
+        start = pd.to_datetime('2016-07-01').tz_localize('US/Eastern')
+        end = pd.to_datetime('2016-10-01').tz_localize('US/Eastern')
+        if (quarter == 2):
+            start = pd.to_datetime('2016-10-01').tz_localize('US/Eastern')
+            end = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
+        elif (quarter == 3):
+            start = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
+            end = pd.to_datetime('2017-04-01').tz_localize('US/Eastern')
+        elif (quarter == 4):
+            start = pd.to_datetime('2017-04-01').tz_localize('US/Eastern')
+            end = pd.to_datetime('2017-07-01').tz_localize('US/Eastern')
+
+        df = None
+
+        if (risk_level == 'low'):
+            df = zipline.run_algorithm(
+                start=start,
+                end=end,
+                initialize=low_risk.initialize,
+                capital_base=capital,
+                handle_data=None,
+                before_trading_start=low_risk.before_trading_start
+            )
+        elif (risk_level == 'mid'):
+            df = zipline.run_algorithm(
+                start=start,
+                end=end,
+                initialize=mid_risk.initialize,
+                capital_base=capital,
+                handle_data=mid_risk.handle_data,
+                before_trading_start=None
+            )
+        elif (risk_level == 'high'):
+            df = None
+
+        return df
 
     @staticmethod
     def getInstance():
@@ -91,82 +109,12 @@ def portfolio():
     if request.method == 'POST':
         return "Under construction"
     else:
-        # df = setup_zipline()
-        # contentP = plot_portfolio(df)
-        # contentS = plot_returns(df)
-        # return render_template("portfolio.html", contentP=contentP, contentS=contentS)
-        return render_template("portfolio.html")
-
-@app.route("/backtest", methods = ['GET', 'POST'])
-def portfolio():
-    if request.method == 'POST':
-        return "Under construction"
-    else:
-        df = setup_zipline()
+        df = backtest()
         contentP = plot_portfolio(df)
         contentS = plot_returns(df)
-        return render_template("backtest.html", contentP=contentP, contentS=contentS)
+        return render_template("portfolio.html", contentP=contentP, contentS=contentS)
 
-def make_pipeline():
-    rsi = RSI()
-    return Pipeline(
-        columns={
-            'longs': rsi.top(3),
-            'shorts': rsi.bottom(3),
-        },
-    )
-
-
-def rebalance(context, data):
-
-    # Pipeline data will be a dataframe with boolean columns named 'longs' and
-    # 'shorts'.
-    pipeline_data = context.pipeline_data
-    all_assets = pipeline_data.index
-
-    longs = all_assets[pipeline_data.longs]
-    shorts = all_assets[pipeline_data.shorts]
-
-    record(universe_size=len(all_assets))
-
-    # Build a 2x-leveraged, equal-weight, long-short portfolio.
-    one_third = 1.0 / 3.0
-    for asset in longs:
-        order_target_percent(asset, one_third)
-
-    for asset in shorts:
-        order_target_percent(asset, -one_third)
-
-    # Remove any assets that should no longer be in our portfolio.
-    portfolio_assets = longs | shorts
-    positions = context.portfolio.positions
-    for asset in viewkeys(positions) - set(portfolio_assets):
-        # This will fail if the asset was removed from our portfolio because it
-        # was delisted.
-        if data.can_trade(asset):
-            order_target_percent(asset, 0)
-
-
-def initialize(context):
-    attach_pipeline(make_pipeline(), 'my_pipeline')
-
-    # Rebalance each day.  In daily mode, this is equivalent to putting
-    # `rebalance` in our handle_data, but in minute mode, it's equivalent to
-    # running at the start of the day each day.
-    schedule_function(rebalance, date_rules.every_day())
-
-    # Explicitly set the commission/slippage to the "old" value until we can
-    # rebuild example data.
-    # github.com/quantopian/zipline/blob/master/tests/resources/
-    # rebuild_example_data#L105
-    context.set_commission(commission.PerShare(cost=.0075, min_trade_cost=1.0))
-    context.set_slippage(slippage.VolumeShareSlippage())
-
-
-def before_trading_start(context, data):
-    context.pipeline_data = pipeline_output('my_pipeline')
-
-def setup_zipline():
+def backtest():
     investment = session['investment'][1:-3]
     capital = ""
     for ch in investment:
@@ -175,9 +123,7 @@ def setup_zipline():
 
     capital = float(capital)
     zp = Zipliner.getInstance()
-    start = pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
-    end = pd.to_datetime('2017-05-01').tz_localize('US/Eastern')
-    df = zp.run(start, end, capital)
+    df = zp.run(capital, 'low', 2)
     return df
 
 def get_fig(data, layout):
