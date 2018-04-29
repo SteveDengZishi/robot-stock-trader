@@ -22,7 +22,7 @@ requests==2.12.4
 six==1.11.0
 SQLAlchemy==1.2.5
 statsmodels==0.8.0
-talib==0.4.17
+TA-lib==0.4.17
 itsdangerous==0.24
 Jinja2==2.9.4
 Werkzeug==0.11.15

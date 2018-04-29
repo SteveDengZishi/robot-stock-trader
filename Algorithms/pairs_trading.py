@@ -1,5 +1,5 @@
-import talib as ta
-from talib import MA_Type
+import TA-lib as ta
+from TA-lib import MA_Type
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import matplotlib as mpl
