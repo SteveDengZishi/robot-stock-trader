@@ -1,4 +1,5 @@
 from zipline.finance import commission, slippage
+import numpy as np
 
 STOCKS = ['AMD', 'CERN', 'COST', 'DELL', 'GPS', 'INTC', 'MMM']
 
