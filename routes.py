@@ -10,7 +10,7 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.offline as off
 import plotly.tools as tls
-import Algorithms.learn_reversion as mid_risk
+import Algorithms.pairs_trading as mid_risk
 import Algorithms.momentum_based as low_risk
 
 app = Flask(__name__)
