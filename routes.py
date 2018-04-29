@@ -123,7 +123,7 @@ def backtest():
 
     capital = float(capital)
     zp = Zipliner.getInstance()
-    df = zp.run(capital, 'low', 2)
+    df = zp.run(capital, 'mid', 2)
     return df
 
 def get_fig(data, layout):
