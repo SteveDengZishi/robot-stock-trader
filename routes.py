@@ -170,6 +170,34 @@ def plot_returns(df):
     data = [trace0, trace1]
     return get_fig(data, layout)
 
+@app.route("/changePref", methods = ['GET', 'POST'])
+def changePref():
+    form = UpdateForm();
+    if request.method == 'POST':
+        if form.validate() == False:
+            return render_template("changePref.html", form=form)
+        else:
+            risk_level = form.riskLevel.data
+            if(risk_level == 'Volatile'):
+                risk_level_int = 0
+            elif(risk_level == 'Moderate'):
+                risk_level_int = 1
+            elif(risk_level == 'Safe'):
+                risk_level_int = 2
+            userName = session['username']
+            change_user = User.query.filter_by(username=userName).first()
+            change_user.inv_amount = form.investment.data
+            change_user.risk_level = risk_level_int
+            db.session.commit()
+            change_user = User.query.filter_by(username=userName).first()
+            session['username'] = change_user.username
+            session['email'] = change_user.email
+            session['investment'] = change_user.inv_amount
+            session['risk_level'] = change_user.risk_level
+            return redirect(url_for('portfolio'))
+    else:
+        return render_template("changePref.html", form=form)
+
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
     form = SignupForm();
