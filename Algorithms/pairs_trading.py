@@ -1,166 +1,97 @@
-import numpy as np
-import statsmodels.api as sm
-import pandas as pd
-
-import zipline.optimize as opt
-import zipline.algorithm as algo
+import talib as ta
+from talib import MA_Type
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import matplotlib as mpl
+import pytz
+import zipline
+import zipline.utils.factory as factory
+from zipline.algorithm import TradingAlgorithm
+from zipline.utils.factory import load_from_yahoo
+from zipline.api import order, symbol, get_order, record
+import statsmodels.tsa.stattools as ts
+from zipline.utils.run_algo import load_extensions
+import os
 
 def initialize(context):
-    # Quantopian backtester specific variables
-    set_slippage(slippage.FixedSlippage(spread=0))
-    set_commission(commission.PerTrade(cost=1))
-    set_symbol_lookup_date('2014-01-01')
+    context.stock_1 = context.symbol(sec1)
+    context.stock_2 = context.symbol(sec2)
+    context.days = 150
+    context.BB_over = False
+    context.BB_under = False
+    context.long_converg = False
+    context.long_diverg = False
 
-    context.stock_pairs = [(symbol('ABGB'), symbol('FSLR')),
-                           (symbol('CSUN'), symbol('ASTI'))]
-
-    context.stocks = symbols('ABGB', 'FSLR', 'CSUN', 'ASTI')
-
-    context.num_pairs = len(context.stock_pairs)
-    # strategy specific variables
-    context.lookback = 20 # used for regression
-    context.z_window = 20 # used for zscore calculation, must be <= lookback
-
-    context.target_weights = pd.Series(index=context.stocks, data=0.25)
-
-    context.spread = np.ndarray((context.num_pairs, 0))
-    context.inLong = [False] * context.num_pairs
-    context.inShort = [False] * context.num_pairs
-
-    # Only do work 30 minutes before close
-    schedule_function(func=check_pair_status, date_rule=date_rules.every_day(), time_rule=time_rules.market_close(minutes=30))
-
-# Will be called on every trade event for the securities you specify.
 def handle_data(context, data):
-    # Our work is now scheduled in check_pair_status
-    pass
+  try:
+    trailing_window_1 = data.history(context.stock_1, 'price', context.days, '1d')
+    trailing_window_2 = data.history(context.stock_2, 'price', context.days, '1d')
+    trailing_ratio = trailing_window_1/trailing_window_2
+  except:
+    return
 
-def check_pair_status(context, data):
+  if (trailing_window_1[-1] >= trailing_window_2[-1]):
+    upper_stock = context.stock_1
+    lower_stock = context.stock_2
+  else:
+    upper_stock = context.stock_2
+    lower_stock = context.stock_1
 
-    prices = data.history(context.stocks, 'price', 35, '1d').iloc[-context.lookback::]
+  coint = ts.coint(trailing_window_1,trailing_window_2)
+  upper, middle, lower = ta.BBANDS(trailing_ratio.values, timeperiod=20, nbdevup=2, nbdevdn=2)
 
-    new_spreads = np.ndarray((context.num_pairs, 1))
+  crossover_top = False
+  crossover_bottom = False
 
-    for i in range(context.num_pairs):
+  #Setting flags
+  if(trailing_ratio[-1] > upper[-1]):
+        context.BB_over = True
 
-        (stock_y, stock_x) = context.stock_pairs[i]
+  if(trailing_ratio[-1] < lower[-1]):
+        context.BB_under = True
 
-        Y = prices[stock_y]
-        X = prices[stock_x]
+  if(trailing_ratio[-1] < upper[-1] and context.BB_over):
+        context.BB_over = False
+        crossover_top = True
 
-        # Comment explaining try block
-        try:
-            hedge = hedge_ratio(Y, X, add_const=True)
-        except ValueError as e:
-            log.debug(e)
-            return
+  if(trailing_ratio[-1] > lower[-1] and context.BB_under):
+        context.BB_under = False
+        crossover_bottom = True
 
-        context.target_weights = get_current_portfolio_weights(context, data)
+  #Wipe away any extraneous positions and orders
+  if (not (context.long_converg or context.long_diverg)):
+        context.order_target(context.stock_1, 0)
+        context.order_target(context.stock_2, 0)
 
-        new_spreads[i, :] = Y[-1] - hedge * X[-1]
+  #Trading Logic
+  if(crossover_top and not (context.long_converg or context.long_diverg)):
+        context.order_target_percent(upper_stock, -.5)
+        context.order_target_percent(lower_stock, .5)
+        context.long_converg = True
 
-        if context.spread.shape[1] > context.z_window:
-            # Keep only the z-score lookback period
-            spreads = context.spread[i, -context.z_window:]
+  elif(crossover_bottom and not (context.long_converg or context.long_diverg)):
+        context.order_target_percent(upper_stock, .5)
+        context.order_target_percent(lower_stock, -.5)
+        context.long_diverg = True
 
-            zscore = (spreads[-1] - spreads.mean()) / spreads.std()
+  if(context.long_converg and trailing_ratio[-1] <= middle[-1]):
+       context.order_target(upper_stock, 0)
+       context.order_target(lower_stock, 0)
+       context.long_converg = False
+       context.long_diverg = False
 
-            if context.inShort[i] and zscore < 0.0:
-                context.target_weights[stock_y] = 0
-                context.target_weights[stock_x] = 0
+  elif(context.long_diverg and trailing_ratio[-1] >= middle[-1]):
+       context.order_target(upper_stock, 0)
+       context.order_target(lower_stock, 0)
+       context.long_converg = False
+       context.long_diverg = False
 
-                context.inShort[i] = False
-                context.inLong[i] = False
-
-                record(X_pct=0, Y_pct=0)
-                allocate(context, data)
-                return
-
-            if context.inLong[i] and zscore > 0.0:
-                context.target_weights[stock_y] = 0
-                context.target_weights[stock_x] = 0
-
-
-                context.inShort[i] = False
-                context.inLong[i] = False
-
-                record(X_pct=0, Y_pct=0)
-                allocate(context, data)
-                return
-
-            if zscore < -1.0 and (not context.inLong[i]):
-                # Only trade if NOT already in a trade
-                y_target_shares = 1
-                X_target_shares = -hedge
-                context.inLong[i] = True
-                context.inShort[i] = False
-
-                (y_target_pct, x_target_pct) = computeHoldingsPct(y_target_shares,X_target_shares, Y[-1], X[-1])
-
-                context.target_weights[stock_y] = y_target_pct * (1.0/context.num_pairs)
-                context.target_weights[stock_x] = x_target_pct * (1.0/context.num_pairs)
-
-                record(Y_pct=y_target_pct, X_pct=x_target_pct)
-                allocate(context, data)
-                return
-
-
-            if zscore > 1.0 and (not context.inShort[i]):
-                # Only trade if NOT already in a trade
-                y_target_shares = -1
-                X_target_shares = hedge
-                context.inShort[i] = True
-                context.inLong[i] = False
-
-                (y_target_pct, x_target_pct) = computeHoldingsPct( y_target_shares, X_target_shares, Y[-1], X[-1] )
-
-                context.target_weights[stock_y] = y_target_pct * (1.0/context.num_pairs)
-                context.target_weights[stock_x] = x_target_pct * (1.0/context.num_pairs)
-
-                record(Y_pct=y_target_pct, X_pct=x_target_pct)
-                allocate(context, data)
-                return
-
-    context.spread = np.hstack([context.spread, new_spreads])
-
-def hedge_ratio(Y, X, add_const=True):
-    if add_const:
-        X = sm.add_constant(X)
-        model = sm.OLS(Y, X).fit()
-        return model.params[1]
-    model = sm.OLS(Y, X).fit()
-    return model.params.values
-
-def computeHoldingsPct(yShares, xShares, yPrice, xPrice):
-    yDol = yShares * yPrice
-    xDol = xShares * xPrice
-    notionalDol =  abs(yDol) + abs(xDol)
-    y_target_pct = yDol / notionalDol
-    x_target_pct = xDol / notionalDol
-    return (y_target_pct, x_target_pct)
-
-def get_current_portfolio_weights(context, data):
-    positions = context.portfolio.positions
-    positions_index = pd.Index(positions)
-    share_counts = pd.Series(
-        index=positions_index,
-        data=[positions[asset].amount for asset in positions]
-    )
-
-    current_prices = data.current(positions_index, 'price')
-    current_weights = share_counts * current_prices / context.portfolio.portfolio_value
-    return current_weights.reindex(positions_index.union(context.stocks), fill_value=0.0)
-
-def allocate(context, data):
-    # Set objective to match target weights as closely as possible, given constraints
-    objective = opt.TargetWeights(context.target_weights)
-
-    # Define constraints
-    constraints = []
-    constraints.append(opt.MaxGrossExposure(1.0))
-
-
-    algo.order_optimal_portfolio(
-        objective=objective,
-        constraints=constraints,
-    )
+  record(security_1=trailing_window_1[-1],
+        security_2=trailing_window_2[-1],
+        coint = coint[0],
+        ratio = trailing_ratio[-1],
+        up = upper[-1],
+        mid = middle[-1],
+        lo = lower[-1],
+        long_converg = context.long_converg,
+        long_diverg = context.long_diverg)
