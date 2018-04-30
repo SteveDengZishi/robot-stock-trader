@@ -10,8 +10,10 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.offline as off
 import plotly.tools as tls
+import Algorithms.learn_reversion as high_risk
 import Algorithms.pairs_trading as mid_risk
 import Algorithms.momentum_based as low_risk
+
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -81,7 +83,14 @@ class Zipliner:
                 before_trading_start=None
             )
         elif (risk_level == 'high'):
-            df = None
+            df = zipline.run_algorithm(
+                start=start,
+                end=end,
+                initialize=high_risk.initialize,
+                capital_base=capital,
+                handle_data=high_risk.handle_data,
+                before_trading_start=None
+            )
 
         return df
 
