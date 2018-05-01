@@ -185,10 +185,13 @@ class Zipliner:
 def portfolio():
     if request.method == 'POST':
     	quarter = request.form['quarter']
-    	zp = Zipliner.getInstance()
-    	contentP = zp.getPlot(quarter, 1)
-    	contentS = zp.getPlot(quarter, 2)
-    	return render_template("portfolio.html", contentP=contentP, contentS=contentS)
+    	if quarter.isdigit() and int(quarter) is in [1,2,3,4]:
+    		zp = Zipliner.getInstance()
+    		contentP = zp.getPlot(int(quarter), 1)
+    		contentS = zp.getPlot(int(quarter), 2)
+    		return render_template("portfolio.html", contentP=contentP, contentS=contentS)
+    	else:
+    		return "Please Enter an Integer from 1 ~ 4"
     else:
         zp = Zipliner.getInstance()
         contentP = zp.getPlot(1, 1)
