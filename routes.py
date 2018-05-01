@@ -59,8 +59,8 @@ class Zipliner:
             )
 
     def run(capital, risk_level, quarter):
-        start = Zipliner.dates[quarter-1]
-        end = Zipliner.dates[quarter]
+        start = Zipliner.dates[quarter]
+        end = Zipliner.dates[quarter+1]
         df = None
 
         if (risk_level == 2):
@@ -78,8 +78,8 @@ class Zipliner:
                 end=end,
                 initialize=mid_risk.initialize,
                 capital_base=capital,
-                handle_data=mid_risk.handle_data,
-                before_trading_start=None
+                handle_data=None,
+                before_trading_start=mid_risk.before_trading_start
             )
         elif (risk_level == 0):
             df = zipline.run_algorithm(
@@ -87,8 +87,8 @@ class Zipliner:
                 end=end,
                 initialize=high_risk.initialize,
                 capital_base=capital,
-                handle_data=high_risk.handle_data,
-                before_trading_start=None
+                handle_data=None,
+                before_trading_start=high_risk.before_trading_start
             )
 
         return df
@@ -135,7 +135,7 @@ class Zipliner:
                  )
 
         data = [trace0, trace1]
-        return get_fig(data, layout)
+        return Zipliner.get_fig(data, layout)
 
     def getPlot(self, quarter, type_p):
         quarter = quarter - 1
