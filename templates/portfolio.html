@@ -94,13 +94,13 @@
 		</div>
 		<div class="inv_amount" id="bottomleft">
 			<h4><b>Total Portfolio Value</b></h4>
-			<h4><i>{{ df['portfolio_value'][-1] }}</i></h4>
+			<h4><i>$ {{ df['portfolio_value'][-1] }}</i></h4>
 			<br>
 			<h4><b>Available Cash</b></h4>
-			<h4><i>{{ session['investment'] }}</i></h4>
+			<h4><i>$ {{ df['ending_cash'][-1] }}</i></h4>
 			<br>
 			<h4><b>Stocks Value</b></h4>
-			<h4><i>$ 0.00</i></h4>
+			<!--<h4><i>{{ df['positions'][-1] }}</i></h4>-->
 		</div>
 		<!--div class="image" id="image-1">
 		</div-->
@@ -109,7 +109,7 @@
 			<!--{{ contentP|safe }}-->
 			{{ contentS|safe }}
 		</div>
-		<div>
+		<div id="bottomright">
 			<h4>Shares Details</h4>
 		</div>
 	</div>
