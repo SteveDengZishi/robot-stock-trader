@@ -48,9 +48,9 @@ class User(db.Model):
 
 class Zipliner:
     __instance = None
-    self.plotP = ['', '', '', '']
-    self.plotR = ['', '', '', '']
-    self.dates = (
+    plotP = ['', '', '', '']
+    plotR = ['', '', '', '']
+    dates = (
                 pd.to_datetime('2016-07-01').tz_localize('US/Eastern'),
                 pd.to_datetime('2016-10-01').tz_localize('US/Eastern'),
                 pd.to_datetime('2017-01-01').tz_localize('US/Eastern'),
