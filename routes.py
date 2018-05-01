@@ -10,8 +10,8 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.offline as off
 import plotly.tools as tls
-import Algorithms.learn_reversion as high_risk
-import Algorithms.pairs_trading as mid_risk
+import Algorithms.momentum_based as high_risk
+import Algorithms.momentum_based as mid_risk
 import Algorithms.momentum_based as low_risk
 
 
@@ -58,9 +58,9 @@ class Zipliner:
                 pd.to_datetime('2017-07-01').tz_localize('US/Eastern')
             )
 
-    def run(self, capital, risk_level, quarter):
-        start = dates[quarter-1]
-        end = dates[quarter]
+    def run(capital, risk_level, quarter):
+        start = Zipliner.dates[quarter]
+        end = Zipliner.dates[quarter+1]
         df = None
 
         if (risk_level == 2):
@@ -78,8 +78,8 @@ class Zipliner:
                 end=end,
                 initialize=mid_risk.initialize,
                 capital_base=capital,
-                handle_data=mid_risk.handle_data,
-                before_trading_start=None
+                handle_data=None,
+                before_trading_start=mid_risk.before_trading_start
             )
         elif (risk_level == 0):
             df = zipline.run_algorithm(
@@ -87,8 +87,8 @@ class Zipliner:
                 end=end,
                 initialize=high_risk.initialize,
                 capital_base=capital,
-                handle_data=high_risk.handle_data,
-                before_trading_start=None
+                handle_data=None,
+                before_trading_start=high_risk.before_trading_start
             )
 
         return df
@@ -112,7 +112,7 @@ class Zipliner:
                  )
 
         data = [trace0]
-        return get_fig(data, layout)
+        return Zipliner.get_fig(data, layout)
 
     def plot_returns(df):
         trace0 = go.Scatter(
@@ -135,11 +135,11 @@ class Zipliner:
                  )
 
         data = [trace0, trace1]
-        return get_fig(data, layout)
+        return Zipliner.get_fig(data, layout)
 
-    def getPlot(quarter, type):
+    def getPlot(self, quarter, type_p):
         quarter = quarter - 1
-        if (plotP[quarter] == '' or plotR[quarter] == ''):
+        if (self.plotP[quarter] == '' or self.plotR[quarter] == ''):
             risk_level = session['risk_level']
             investment = session['investment'][1:-3]
             capital = ""
@@ -148,19 +148,19 @@ class Zipliner:
                     capital+=ch
 
             capital = float(capital)
-            df = run(capital, risk_level, quarter)
-            plotP[quarter] = plot_portfolio(df)
-            plotR[quarter] = plot_returns(df)
+            df = Zipliner.run(capital, risk_level, quarter)
+            self.plotP[quarter] = Zipliner.plot_portfolio(df)
+            self.plotR[quarter] = Zipliner.plot_returns(df)
 
-        if (type == 1):
-            return plotP[quarter]
+        if (type_p == 1):
+            return self.plotP[quarter]
         else:
-            return plotR[quarter]
+            return self.plotR[quarter]
 
-    def resetPlots():
+    def resetPlots(self):
         for i in range(0,4):
-            plotP[i] = ''
-            plotR[i] = ''
+            self.plotP[i] = ''
+            self.plotR[i] = ''
 
     @staticmethod
     def getInstance():
@@ -184,7 +184,14 @@ class Zipliner:
 @app.route("/portfolio", methods = ['GET', 'POST'])
 def portfolio():
     if request.method == 'POST':
-        return "Under construction"
+    	quarter = request.form['quarter']
+    	if quarter.isdigit() and int(quarter) in [1,2,3,4]:
+    		zp = Zipliner.getInstance()
+    		contentP = zp.getPlot(int(quarter), 1)
+    		contentS = zp.getPlot(int(quarter), 2)
+    		return render_template("portfolio.html", contentP=contentP, contentS=contentS)
+    	else:
+    		return "Please Enter an Integer from 1 ~ 4"
     else:
         zp = Zipliner.getInstance()
         contentP = zp.getPlot(1, 1)
