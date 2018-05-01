@@ -184,7 +184,11 @@ class Zipliner:
 @app.route("/portfolio", methods = ['GET', 'POST'])
 def portfolio():
     if request.method == 'POST':
-        return "Under construction"
+    	quarter = request.form['quarter']
+    	zp = Zipliner.getInstance()
+    	contentP = zp.getPlot(quarter, 1)
+    	contentS = zp.getPlot(quarter, 2)
+    	return render_template("portfolio.html", contentP=contentP, contentS=contentS)
     else:
         zp = Zipliner.getInstance()
         contentP = zp.getPlot(1, 1)
