@@ -48,9 +48,9 @@ class User(db.Model):
 
 class Zipliner:
     __instance = None
-    plotP = ['', '', '', '']
-    plotR = ['', '', '', '']
-    dates = (
+    self.plotP = ['', '', '', '']
+    self.plotR = ['', '', '', '']
+    self.dates = (
                 pd.to_datetime('2016-07-01').tz_localize('US/Eastern'),
                 pd.to_datetime('2016-10-01').tz_localize('US/Eastern'),
                 pd.to_datetime('2017-01-01').tz_localize('US/Eastern'),
@@ -139,7 +139,7 @@ class Zipliner:
 
     def getPlot(self, quarter, type_p):
         quarter = quarter - 1
-        if (plotP[quarter] == '' or plotR[quarter] == ''):
+        if (self.plotP[quarter] == '' or self.plotR[quarter] == ''):
             risk_level = session['risk_level']
             investment = session['investment'][1:-3]
             capital = ""
@@ -149,18 +149,18 @@ class Zipliner:
 
             capital = float(capital)
             df = run(capital, risk_level, quarter)
-            plotP[quarter] = plot_portfolio(df)
-            plotR[quarter] = plot_returns(df)
+            self.plotP[quarter] = plot_portfolio(df)
+            self.plotR[quarter] = plot_returns(df)
 
         if (type_p == 1):
-            return plotP[quarter]
+            return self.plotP[quarter]
         else:
-            return plotR[quarter]
+            return self.plotR[quarter]
 
     def resetPlots(self):
         for i in range(0,4):
-            plotP[i] = ''
-            plotR[i] = ''
+            self.plotP[i] = ''
+            self.plotR[i] = ''
 
     @staticmethod
     def getInstance():
