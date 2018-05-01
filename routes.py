@@ -51,23 +51,23 @@ class Zipliner:
     plotP = ['', '', '', '']
     plotR = ['', '', '', '']
     dates = (
+                pd.to_datetime('2016-01-01').tz_localize('US/Eastern'),
+                pd.to_datetime('2016-04-01').tz_localize('US/Eastern'),
                 pd.to_datetime('2016-07-01').tz_localize('US/Eastern'),
                 pd.to_datetime('2016-10-01').tz_localize('US/Eastern'),
-                pd.to_datetime('2017-01-01').tz_localize('US/Eastern'),
-                pd.to_datetime('2017-04-01').tz_localize('US/Eastern'),
-                pd.to_datetime('2017-07-01').tz_localize('US/Eastern')
+                pd.to_datetime('2017-01-01').tz_localize('US/Eastern')
     )
     labels = (
+                '1/1/2016',
+                '4/1/2016',
                 '7/1/2016',
-                '10/1/2016',
-                '1/1/2017',
-                '4/1/2017'
+                '10/1/2016'
     )
     titles = (
+                'Q1 2016',
+                'Q2 2016',
                 'Q3 2016',
-                'Q4 2016',
-                'Q1 2017',
-                'Q2 2017'
+                'Q4 2016'
     )
 
     def run(capital, risk_level, quarter):
