@@ -118,8 +118,8 @@ class Zipliner:
             line = dict(color = ('rgb(22, 96, 167)'), width = 1)
         )
 
-        layout = dict(title = ('Portfolio Value ' + titles[quarter]),
-                  xaxis = dict(title = ('Days Since' + labels[quarter])),
+        layout = dict(title = ('Portfolio Value ' + Zipliner.titles[quarter]),
+                  xaxis = dict(title = ('Days Since' + Zipliner.labels[quarter])),
                   yaxis = dict(title = 'Net Value (USD)'),
                  )
 
@@ -141,8 +141,8 @@ class Zipliner:
             line = dict(color = ('rgb(205, 12, 24)'), width = 1)
         )
 
-        layout = dict(title = ('Portfolio Period Returns ' + titles[quarter]),
-                  xaxis = dict(title = ('Days Since ' + labels[quarter])),
+        layout = dict(title = ('Portfolio Period Returns ' + Zipliner.titles[quarter]),
+                  xaxis = dict(title = ('Days Since ' + Zipliner.labels[quarter])),
                   yaxis = dict(title = 'Returns (%)'),
                  )
 
