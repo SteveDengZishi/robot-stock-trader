@@ -10,8 +10,8 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.offline as off
 import plotly.tools as tls
-import Algorithms.learn_reversion as high_risk
-import Algorithms.pairs_trading as mid_risk
+import Algorithms.momentum_based as high_risk
+import Algorithms.momentum_based as mid_risk
 import Algorithms.momentum_based as low_risk
 
 
@@ -93,12 +93,12 @@ class Zipliner:
 
         return df
 
-    def get_fig(data, layout):
+    def get_fig(self, data, layout):
         fig = dict(data=data, layout=layout)
         content = off.plot(fig, output_type='div')
         return content
 
-    def plot_portfolio(df):
+    def plot_portfolio(self, df):
         trace0 = go.Scatter(
             x=df.columns[0],
             y=df['portfolio_value'],
@@ -114,7 +114,7 @@ class Zipliner:
         data = [trace0]
         return get_fig(data, layout)
 
-    def plot_returns(df):
+    def plot_returns(self, df):
         trace0 = go.Scatter(
             x=df.columns[0],
             y=df['algorithm_period_return']*100,
@@ -137,7 +137,7 @@ class Zipliner:
         data = [trace0, trace1]
         return get_fig(data, layout)
 
-    def getPlot(quarter, type):
+    def getPlot(self, quarter, type_p):
         quarter = quarter - 1
         if (plotP[quarter] == '' or plotR[quarter] == ''):
             risk_level = session['risk_level']
@@ -152,12 +152,12 @@ class Zipliner:
             plotP[quarter] = plot_portfolio(df)
             plotR[quarter] = plot_returns(df)
 
-        if (type == 1):
+        if (type_p == 1):
             return plotP[quarter]
         else:
             return plotR[quarter]
 
-    def resetPlots():
+    def resetPlots(self):
         for i in range(0,4):
             plotP[i] = ''
             plotR[i] = ''
