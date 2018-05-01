@@ -56,7 +56,19 @@ class Zipliner:
                 pd.to_datetime('2017-01-01').tz_localize('US/Eastern'),
                 pd.to_datetime('2017-04-01').tz_localize('US/Eastern'),
                 pd.to_datetime('2017-07-01').tz_localize('US/Eastern')
-            )
+    )
+    labels = (
+                '7/1/2016',
+                '10/1/2016',
+                '1/1/2017',
+                '4/1/2017'
+    )
+    titles = (
+                'Q3 2016',
+                'Q4 2016',
+                'Q1 2017',
+                'Q2 2017'
+    )
 
     def run(capital, risk_level, quarter):
         start = Zipliner.dates[quarter]
@@ -98,7 +110,7 @@ class Zipliner:
         content = off.plot(fig, output_type='div')
         return content
 
-    def plot_portfolio(df):
+    def plot_portfolio(df, quarter):
         trace0 = go.Scatter(
             x=df.columns[0],
             y=df['portfolio_value'],
@@ -106,15 +118,15 @@ class Zipliner:
             line = dict(color = ('rgb(22, 96, 167)'), width = 1)
         )
 
-        layout = dict(title = 'Portfolio Value 2016',
-                  xaxis = dict(title = 'Days Since 1/1/2015'),
+        layout = dict(title = ('Portfolio Value ' + titles[quarter]),
+                  xaxis = dict(title = ('Days Since' + labels[quarter])),
                   yaxis = dict(title = 'Net Value (USD)'),
                  )
 
         data = [trace0]
         return Zipliner.get_fig(data, layout)
 
-    def plot_returns(df):
+    def plot_returns(df, quarter):
         trace0 = go.Scatter(
             x=df.columns[0],
             y=df['algorithm_period_return']*100,
@@ -129,8 +141,8 @@ class Zipliner:
             line = dict(color = ('rgb(205, 12, 24)'), width = 1)
         )
 
-        layout = dict(title = 'Portfolio Period Returns 2016',
-                  xaxis = dict(title = 'Days Since 1/1/2015'),
+        layout = dict(title = ('Portfolio Period Returns ' + titles[quarter]),
+                  xaxis = dict(title = ('Days Since ' + labels[quarter])),
                   yaxis = dict(title = 'Returns (%)'),
                  )
 
@@ -149,8 +161,8 @@ class Zipliner:
 
             capital = float(capital)
             df = Zipliner.run(capital, risk_level, quarter)
-            self.plotP[quarter] = Zipliner.plot_portfolio(df)
-            self.plotR[quarter] = Zipliner.plot_returns(df)
+            self.plotP[quarter] = Zipliner.plot_portfolio(df, quarter)
+            self.plotR[quarter] = Zipliner.plot_returns(df, quarter)
 
         if (type_p == 1):
             return self.plotP[quarter]
