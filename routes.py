@@ -223,6 +223,8 @@ def changePref():
             session['email'] = change_user.email
             session['investment'] = change_user.inv_amount
             session['risk_level'] = change_user.risk_level
+            zp = Zipliner.getInstance()
+            zp.resetPlots()
             return redirect(url_for('portfolio'))
     else:
         return render_template("changePref.html", form=form)
@@ -252,8 +254,6 @@ def signup():
             session['email'] = newUser.email
             session['investment'] = newUser.inv_amount
             session['risk_level'] = newUser.risk_level
-            zp = Zipliner.getInstance()
-            zp.resetPlots()
             return redirect(url_for('portfolio'))
     else:
         return render_template("signup.html", form=form)
