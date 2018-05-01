@@ -58,9 +58,9 @@ class Zipliner:
                 pd.to_datetime('2017-07-01').tz_localize('US/Eastern')
             )
 
-    def run(self, capital, risk_level, quarter):
-        start = dates[quarter-1]
-        end = dates[quarter]
+    def run(capital, risk_level, quarter):
+        start = Zipliner.dates[quarter-1]
+        end = Zipliner.dates[quarter]
         df = None
 
         if (risk_level == 2):
@@ -93,12 +93,12 @@ class Zipliner:
 
         return df
 
-    def get_fig(self, data, layout):
+    def get_fig(data, layout):
         fig = dict(data=data, layout=layout)
         content = off.plot(fig, output_type='div')
         return content
 
-    def plot_portfolio(self, df):
+    def plot_portfolio(df):
         trace0 = go.Scatter(
             x=df.columns[0],
             y=df['portfolio_value'],
@@ -112,9 +112,9 @@ class Zipliner:
                  )
 
         data = [trace0]
-        return get_fig(data, layout)
+        return Zipliner.get_fig(data, layout)
 
-    def plot_returns(self, df):
+    def plot_returns(df):
         trace0 = go.Scatter(
             x=df.columns[0],
             y=df['algorithm_period_return']*100,
@@ -148,9 +148,9 @@ class Zipliner:
                     capital+=ch
 
             capital = float(capital)
-            df = run(capital, risk_level, quarter)
-            self.plotP[quarter] = plot_portfolio(df)
-            self.plotR[quarter] = plot_returns(df)
+            df = Zipliner.run(capital, risk_level, quarter)
+            self.plotP[quarter] = Zipliner.plot_portfolio(df)
+            self.plotR[quarter] = Zipliner.plot_returns(df)
 
         if (type_p == 1):
             return self.plotP[quarter]
