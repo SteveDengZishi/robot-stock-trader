@@ -94,10 +94,10 @@
 		</div>
 		<div class="inv_amount" id="bottomleft">
 			<h4><b>Total Portfolio Value</b></h4>
-			<h4><i>$ {{ df['portfolio_value'][-1] }}</i></h4>
+			<h4><i>$ {{ '%0.2f' % df['portfolio_value'][-1] }}</i></h4>
 			<br>
 			<h4><b>Available Cash</b></h4>
-			<h4><i>$ {{ df['ending_cash'][-1] }}</i></h4>
+			<h4><i>$ {{ '%0.2f' % df['ending_cash'][-1] }}</i></h4>
 			<br>
 			<h4><b>Stocks Value</b></h4>
 			<!--<h4><i>{{ df['positions'][-1] }}</i></h4>-->
@@ -111,11 +111,11 @@
 		</div>
 		<div id="bottomright">
 			<h4>Shares Details</h4>
-			<ul>
+			<ol>
 			{% for item in df['positions'][-1] %}
-			<li>sid:{{ item['sid'] }} #shares:{{ item['amount'] }} cost_basis:{{ item['cost_basis'] }} last_sell_price:{{ item['last_sell_price'] }}</li>
+			<li>{{ item['sid'] }} &nbsp&nbsp #Amount: {{ item['amount'] }} &nbsp&nbsp Cost_Basis: {{ '%0.2f' % item['cost_basis'] }} &nbsp&nbsp Last_Sale_Price: {{ item['last_sale_price'] }}</li>
 			{% endfor %}
-			</ul>
+			</ol>
 		</div>
 	</div>
 	<!-- <h>{{session['username']}}</h>
