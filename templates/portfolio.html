@@ -111,6 +111,11 @@
 		</div>
 		<div id="bottomright">
 			<h4>Shares Details</h4>
+			<ul>
+			{% for item in df['positions'][-1] %}
+			<li>sid:{{ item['sid'] }} #shares:{{ item['amount'] }} cost_basis:{{ item['cost_basis'] last_sell_price:{{ item['last_sell_price'] }} }}</li>
+			{% endfor %}
+			</ul>
 		</div>
 	</div>
 	<!-- <h>{{session['username']}}</h>
