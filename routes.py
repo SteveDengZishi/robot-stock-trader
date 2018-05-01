@@ -185,7 +185,7 @@ class Zipliner:
 def portfolio():
     if request.method == 'POST':
     	quarter = request.form['quarter']
-    	if quarter.isdigit() and int(quarter) is in [1,2,3,4]:
+    	if quarter.isdigit() and int(quarter) in [1,2,3,4]:
     		zp = Zipliner.getInstance()
     		contentP = zp.getPlot(int(quarter), 1)
     		contentS = zp.getPlot(int(quarter), 2)
