@@ -69,7 +69,6 @@ class Zipliner:
                 'Q3 2016',
                 'Q4 2016'
     )
-
     def run(capital, risk_level, quarter):
         start = Zipliner.dates[quarter]
         end = Zipliner.dates[quarter+1]
@@ -160,14 +159,17 @@ class Zipliner:
                     capital+=ch
 
             capital = float(capital)
-            df = Zipliner.run(capital, risk_level, quarter)
-            self.plotP[quarter] = Zipliner.plot_portfolio(df, quarter)
-            self.plotR[quarter] = Zipliner.plot_returns(df, quarter)
+            self.df = Zipliner.run(capital, risk_level, quarter)
+            self.plotP[quarter] = Zipliner.plot_portfolio(self.df, quarter)
+            self.plotR[quarter] = Zipliner.plot_returns(self.df, quarter)
 
         if (type_p == 1):
             return self.plotP[quarter]
         else:
             return self.plotR[quarter]
+            
+    def getDataFrame(self):
+    	return self.df
 
     def resetPlots(self):
         for i in range(0,4):
@@ -201,14 +203,16 @@ def portfolio():
     		zp = Zipliner.getInstance()
     		contentP = zp.getPlot(int(quarter), 1)
     		contentS = zp.getPlot(int(quarter), 2)
-    		return render_template("portfolio.html", contentP=contentP, contentS=contentS)
+    		df = zp.getDataFrame()
+    		return render_template("portfolio.html", contentP=contentP, contentS=contentS, df=df)
     	else:
     		return "Please Enter an Integer from 1 ~ 4"
     else:
         zp = Zipliner.getInstance()
         contentP = zp.getPlot(1, 1)
         contentS = zp.getPlot(1, 2)
-        return render_template("portfolio.html", contentP=contentP, contentS=contentS)
+        df = zp.getDataFrame()
+        return render_template("portfolio.html", contentP=contentP, contentS=contentS, df=df)
 
 
 @app.route("/changePref", methods = ['GET', 'POST'])
