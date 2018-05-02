@@ -110,10 +110,10 @@
 			{{ contentS|safe }}
 		</div>
 		<div id="bottomright">
-			<h4>Shares Details</h4>
+			<h4>Portfolio Shares Details</h4>
 			<ol>
 			{% for item in df['positions'][-1] %}
-			<li>{{ item['sid'] }} &nbsp&nbsp #Amount: {{ item['amount'] }} &nbsp&nbsp Cost_Basis: {{ '%0.2f' % item['cost_basis'] }} &nbsp&nbsp Last_Sale_Price: {{ item['last_sale_price'] }}</li>
+			<li><b>{{ item['sid'] }}</b> &nbsp&nbsp Amount: {{ item['amount'] }} &nbsp&nbsp Cost_Basis: {{ '%0.2f' % item['cost_basis'] }} &nbsp&nbsp Last_Sale_Price: {{ '%0.2f' % item['last_sale_price'] }}</li>
 			{% endfor %}
 			</ol>
 		</div>
