@@ -94,20 +94,28 @@
 		</div>
 		<div class="inv_amount" id="bottomleft">
 			<h4><b>Total Portfolio Value</b></h4>
-			<h4><i>{{session['investment']}}</i></h4>
+			<h4><i>$ {{ '%0.2f' % df['portfolio_value'][-1] }}</i></h4>
 			<br>
 			<h4><b>Available Cash</b></h4>
-			<h4><i>{{session['investment']}}</i></h4>
+			<h4><i>$ {{ '%0.2f' % df['ending_cash'][-1] }}</i></h4>
 			<br>
-			<h4><b>Stocks Value</b></h4>
-			<h4><i>$ 0.00</i></h4>
+			<h4><b>Trading Days</b></h4>
+			<h4><i>{{ df['trading_days'][-1] }}</i></h4>
 		</div>
 		<!--div class="image" id="image-1">
 		</div-->
 		<div id="topright">
 			<!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
-			{{ contentP|safe }}
+			<!--{{ contentP|safe }}-->
 			{{ contentS|safe }}
+		</div>
+		<div id="bottomright">
+			<h4>Portfolio Shares Details</h4>
+			<ol>
+			{% for item in df['positions'][-1] %}
+			<li><b>{{ item['sid'] }}</b> &nbsp&nbsp Amount: {{ item['amount'] }} &nbsp&nbsp Cost_Basis: {{ '%0.2f' % item['cost_basis'] }} &nbsp&nbsp Last_Sale_Price: {{ '%0.2f' % item['last_sale_price'] }}</li>
+			{% endfor %}
+			</ol>
 		</div>
 	</div>
 	<!-- <h>{{session['username']}}</h>

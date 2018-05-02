@@ -61,7 +61,7 @@ img[class=container]{
 	height: 25%;
 	top: 72%;
 	left: 42%;
-	background-color: white
+	background-color: white;
 	overflow-y: scroll;
 }
 
