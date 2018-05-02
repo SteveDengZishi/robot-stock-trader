@@ -98,8 +98,7 @@ class Zipliner:
                 end=end,
                 initialize=high_risk.initialize,
                 capital_base=capital,
-                handle_data=high_risk.handle_data,
-                before_trading_start=None
+                handle_data=high_risk.handle_data
             )
 
         return df
