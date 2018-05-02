@@ -10,7 +10,7 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.offline as off
 import plotly.tools as tls
-import Algorithms.momentum_based as high_risk
+import Algorithms.learn_reversion as high_risk
 import Algorithms.momentum_based as mid_risk
 import Algorithms.momentum_based as low_risk
 
@@ -98,8 +98,8 @@ class Zipliner:
                 end=end,
                 initialize=high_risk.initialize,
                 capital_base=capital,
-                handle_data=None,
-                before_trading_start=high_risk.before_trading_start
+                handle_data=high_risk.handle_data,
+                before_trading_start=None
             )
 
         return df
@@ -167,7 +167,7 @@ class Zipliner:
             return self.plotP[quarter]
         else:
             return self.plotR[quarter]
-            
+
     def getDataFrame(self):
     	return self.df
 
