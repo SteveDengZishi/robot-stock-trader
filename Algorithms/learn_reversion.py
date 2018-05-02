@@ -1,7 +1,18 @@
-from zipline.finance import commission, slippage
+import sys
+import logbook
 import numpy as np
 
+from zipline.finance import commission, slippage
+
+zipline_logging = logbook.NestedSetup([
+    logbook.NullHandler(),
+    logbook.StreamHandler(sys.stdout, level=logbook.INFO),
+    logbook.StreamHandler(sys.stderr, level=logbook.ERROR),
+])
+zipline_logging.push_application()
+
 STOCKS = ['AMD', 'CERN', 'COST', 'DELL', 'GPS', 'INTC', 'MMM']
+
 
 # On-Line Portfolio Moving Average Reversion
 
