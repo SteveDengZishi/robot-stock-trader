@@ -102,7 +102,6 @@ class Zipliner:
                 before_trading_start=high_risk.before_trading_start
             )
 
-        dfs[quarter] = df
         return df
 
     def get_fig(data, layout):
@@ -160,7 +159,7 @@ class Zipliner:
                     capital+=ch
 
             capital = float(capital)
-            self.df = Zipliner.run(capital, risk_level, quarter)
+            self.dfs[quarter] = Zipliner.run(capital, risk_level, quarter)
             self.plotP[quarter] = Zipliner.plot_portfolio(self.df, quarter)
             self.plotR[quarter] = Zipliner.plot_returns(self.df, quarter)
 
