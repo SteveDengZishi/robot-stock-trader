@@ -89,8 +89,7 @@ class Zipliner:
                 end=end,
                 initialize=mid_risk.initialize,
                 capital_base=capital,
-                handle_data=None,
-                before_trading_start=mid_risk.before_trading_start
+                handle_data=mid_risk.handle_data
             )
         elif (risk_level == 0):
             df = zipline.run_algorithm(
