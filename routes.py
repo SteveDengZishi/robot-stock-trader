@@ -5,6 +5,7 @@ from forms import SignupForm, LoginForm, UpdateForm
 import numpy as np
 import pandas as pd
 import zipline
+import pykalman
 from datetime import datetime
 import plotly.plotly as py
 import plotly.graph_objs as go

@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pykalman
 from pykalman import KalmanFilter
 import statsmodels.api as sm
 
