@@ -181,9 +181,9 @@ class Zipliner:
         if Zipliner.__instance == None:
             Zipliner()
         try:
-            zipline.data.bundles.load('quandl', environ=os.environ)
+            zipline.data.bundles.load('quantopian-quandl', environ=os.environ)
         except:
-            zipline.data.bundles.ingest('quandl', environ=os.environ)
+            zipline.data.bundles.ingest('quantopian-quandl', environ=os.environ)
         return Zipliner.__instance
 
     def __init__(self):
@@ -192,7 +192,7 @@ class Zipliner:
         else:
             Zipliner.__instance = self
             os.environ['QUANDL_API_KEY'] = 'BfFWYESoFyQ_51bU1XXs'
-            zipline.data.bundles.ingest('quandl', environ=os.environ)
+            zipline.data.bundles.ingest('quantopian-quandl', environ=os.environ)
 
 
 
