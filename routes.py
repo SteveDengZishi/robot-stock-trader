@@ -169,7 +169,7 @@ class Zipliner:
             return self.plotR[quarter]
 
     def getDataFrame(self, quarter):
-    	return self.dfs[quarter]
+    	return self.dfs[quarter-1]
 
     def resetPlots(self):
         for i in range(0,4):
