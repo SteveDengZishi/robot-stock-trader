@@ -4,22 +4,19 @@ import numpy as np
 
 from zipline.finance import commission, slippage
 
-zipline_logging = logbook.NestedSetup([
-    logbook.NullHandler(),
-    logbook.StreamHandler(sys.stdout, level=logbook.INFO),
-    logbook.StreamHandler(sys.stderr, level=logbook.ERROR),
-])
-zipline_logging.push_application()
-
-STOCKS = ['AMD', 'CERN', 'COST', 'DELL', 'GPS', 'INTC', 'MMM']
-
+# zipline_logging = logbook.NestedSetup([
+#     logbook.NullHandler(),
+#     logbook.StreamHandler(sys.stdout, level=logbook.INFO),
+#     logbook.StreamHandler(sys.stderr, level=logbook.ERROR),
+# ])
+# zipline_logging.push_application()
 
 # On-Line Portfolio Moving Average Reversion
 
 # More info can be found in the corresponding paper:
 # http://icml.cc/2012/papers/168.pdf
 def initialize(algo, eps=1, window_length=5):
-    algo.stocks = STOCKS
+    algo.stocks = ['AMD', 'CERN', 'COST', 'DELL', 'GPS', 'INTC', 'MMM']
     algo.sids = [algo.symbol(symbol) for symbol in algo.stocks]
     algo.m = len(algo.stocks)
     algo.price = {}
