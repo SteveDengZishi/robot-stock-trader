@@ -97,7 +97,7 @@
 			<h4><i>$ {{ '%0.2f' % df['portfolio_value'][-1] }}</i></h4>
 			<br>
 			<h4><b>Percentage Period Returns</b></h4>
-			<h4><i>$ {{ '%0.2f' % df['algorithm_period_return'][-1] }}</i></h4>
+			<h4><i>{{ '%0.2f' % df['algorithm_period_return'][-1] }} %</i></h4>
 			<br>
 			<h4><b>Trading Days</b></h4>
 			<h4><i>{{ df['trading_days'][-1] }}</i></h4>
