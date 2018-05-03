@@ -3,7 +3,7 @@ import pandas as pd
 import pykalman
 from pykalman import KalmanFilter
 import statsmodels.api as sm
-from zipline.api import set_slippage, set_commission, sid, time_rules
+from zipline.api import set_slippage, set_commission, sid, symbol, time_rules
 from zipline.finance import slippage, commission
 
 
@@ -14,29 +14,34 @@ def initialize(context):
 
     context.pairs = [
         # STX, WDC
-        KalmanPairTrade(sid(24518), sid(8132),
+        KalmanPairTrade(symbol('STX'), symbol('WDC'),
                         initial_bars=300, freq='1m', delta=1e-3, maxlen=300),
         # CBI, JEC
-        KalmanPairTrade(sid(1287), sid(4120),
+        KalmanPairTrade(symbol('CBI'), symbol('JEC'),
                         initial_bars=300, freq='1m', delta=1e-3, maxlen=300),
         # MAS, VMC
-        KalmanPairTrade(sid(4665), sid(7998),
+        KalmanPairTrade(symbol('MAS'), symbol('VMC'),
                         initial_bars=300, freq='1m', delta=1e-3, maxlen=300),
         # JPM, C
-        KalmanPairTrade(sid(25006), sid(1335),
+        KalmanPairTrade(symbol('JPM'), symbol('C'),
                         initial_bars=300, freq='1m', delta=1e-3, maxlen=300),
         # AON, MMC
-        KalmanPairTrade(sid(438), sid(4914),
+        KalmanPairTrade(symbol('AON'), symbol('MMC'),
                         initial_bars=300, freq='1m', delta=1e-3, maxlen=300),
         # COP, CVX
-        KalmanPairTrade(sid(23998), sid(23112),
+        KalmanPairTrade(symbol('COP'), symbol('CVX'),
                         initial_bars=300, freq='1m', delta=1e-3, maxlen=300),
 
     ]
 
-    context.security_list = [sid(24518), sid(8132), sid(1287), sid(4120),
-                             sid(4665), sid(7998), sid(25006), sid(1335),
-                             sid(438), sid(4914), sid(23998), sid(23112)]
+    context.security_list = [
+                                symbol('STX'), symbol('WDC'),
+                                symbol('CBI'), symbol('JEC'),
+                                symbol('MAS'), symbol('VMC'),
+                                symbol('JPM'), symbol('C'),
+                                symbol('AON'), symbol('MMC'),
+                                symbol('COP'), symbol('CVX'),
+                            ]
 
     weight = 1.8 / len(context.pairs)
     for pair in context.pairs:
