@@ -5,15 +5,16 @@ from forms import SignupForm, LoginForm, UpdateForm
 import numpy as np
 import pandas as pd
 import zipline
+import pykalman
 from datetime import datetime
 import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.offline as off
 import plotly.tools as tls
 import Algorithms.momentum_based as high_risk
-import Algorithms.momentum_based as mid_risk
-import Algorithms.momentum_based as low_risk
-
+import Algorithms.olmar_two as mid_risk
+import Algorithms.dual_moving_avg as low_risk
+import os
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -48,6 +49,7 @@ class User(db.Model):
 
 class Zipliner:
     __instance = None
+    dfs = [None, None, None, None]
     plotP = ['', '', '', '']
     plotR = ['', '', '', '']
     dates = (
@@ -80,8 +82,7 @@ class Zipliner:
                 end=end,
                 initialize=low_risk.initialize,
                 capital_base=capital,
-                handle_data=None,
-                before_trading_start=low_risk.before_trading_start
+                handle_data=low_risk.handle_data
             )
         elif (risk_level == 1):
             df = zipline.run_algorithm(
@@ -89,8 +90,7 @@ class Zipliner:
                 end=end,
                 initialize=mid_risk.initialize,
                 capital_base=capital,
-                handle_data=None,
-                before_trading_start=mid_risk.before_trading_start
+                handle_data=mid_risk.handle_data
             )
         elif (risk_level == 0):
             df = zipline.run_algorithm(
@@ -159,17 +159,17 @@ class Zipliner:
                     capital+=ch
 
             capital = float(capital)
-            self.df = Zipliner.run(capital, risk_level, quarter)
-            self.plotP[quarter] = Zipliner.plot_portfolio(self.df, quarter)
-            self.plotR[quarter] = Zipliner.plot_returns(self.df, quarter)
+            self.dfs[quarter] = Zipliner.run(capital, risk_level, quarter)
+            self.plotP[quarter] = Zipliner.plot_portfolio(self.dfs[quarter], quarter)
+            self.plotR[quarter] = Zipliner.plot_returns(self.dfs[quarter], quarter)
 
         if (type_p == 1):
             return self.plotP[quarter]
         else:
             return self.plotR[quarter]
-            
-    def getDataFrame(self):
-    	return self.df
+
+    def getDataFrame(self, quarter):
+    	return self.dfs[quarter-1]
 
     def resetPlots(self):
         for i in range(0,4):
@@ -178,12 +178,13 @@ class Zipliner:
 
     @staticmethod
     def getInstance():
+        os.environ['QUANDL_API_KEY'] = 'BfFWYESoFyQ_51bU1XXs'
         if Zipliner.__instance == None:
             Zipliner()
         try:
-            zipline.data.bundles.load('quantopian-quandl')
+            zipline.data.bundles.load('quantopian-quandl', environ=os.environ)
         except:
-            zipline.data.bundles.ingest('quantopian-quandl')
+            zipline.data.bundles.ingest('quantopian-quandl', environ=os.environ)
         return Zipliner.__instance
 
     def __init__(self):
@@ -191,7 +192,8 @@ class Zipliner:
             raise Exception("should be singleton")
         else:
             Zipliner.__instance = self
-            zipline.data.bundles.ingest('quantopian-quandl')
+            os.environ['QUANDL_API_KEY'] = 'BfFWYESoFyQ_51bU1XXs'
+            zipline.data.bundles.ingest('quantopian-quandl', environ=os.environ)
 
 
 
@@ -203,7 +205,7 @@ def portfolio():
     		zp = Zipliner.getInstance()
     		contentP = zp.getPlot(int(quarter), 1)
     		contentS = zp.getPlot(int(quarter), 2)
-    		df = zp.getDataFrame()
+    		df = zp.getDataFrame(int(quarter))
     		return render_template("portfolio.html", contentP=contentP, contentS=contentS, df=df)
     	else:
     		return "Please Enter an Integer from 1 ~ 4"
@@ -211,7 +213,7 @@ def portfolio():
         zp = Zipliner.getInstance()
         contentP = zp.getPlot(1, 1)
         contentS = zp.getPlot(1, 2)
-        df = zp.getDataFrame()
+        df = zp.getDataFrame(1)
         return render_template("portfolio.html", contentP=contentP, contentS=contentS, df=df)
 
 
