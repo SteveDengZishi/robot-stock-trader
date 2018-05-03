@@ -14,7 +14,7 @@ import plotly.tools as tls
 import Algorithms.olmar_two as high_risk
 import Algorithms.momentum_based as mid_risk
 import Algorithms.dual_moving_avg as low_risk
-
+import os
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -177,12 +177,13 @@ class Zipliner:
 
     @staticmethod
     def getInstance():
+        os.environ['QUANDL-API-KEY'] = 'BfFWYESoFyQ_51bU1XXs'
         if Zipliner.__instance == None:
             Zipliner()
         try:
-            zipline.data.bundles.load('quantopian-quandl')
+            zipline.data.bundles.load('quandl')
         except:
-            zipline.data.bundles.ingest('quantopian-quandl')
+            zipline.data.bundles.ingest('quandl')
         return Zipliner.__instance
 
     def __init__(self):
@@ -190,7 +191,8 @@ class Zipliner:
             raise Exception("should be singleton")
         else:
             Zipliner.__instance = self
-            zipline.data.bundles.ingest('quantopian-quandl')
+            os.environ['QUANDL-API-KEY'] = 'BfFWYESoFyQ_51bU1XXs'
+            zipline.data.bundles.ingest('quandl')
 
 
 
