@@ -160,8 +160,8 @@ class Zipliner:
 
             capital = float(capital)
             self.dfs[quarter] = Zipliner.run(capital, risk_level, quarter)
-            self.plotP[quarter] = Zipliner.plot_portfolio(self.df, quarter)
-            self.plotR[quarter] = Zipliner.plot_returns(self.df, quarter)
+            self.plotP[quarter] = Zipliner.plot_portfolio(self.dfs[quarter], quarter)
+            self.plotR[quarter] = Zipliner.plot_returns(self.dfs[quarter], quarter)
 
         if (type_p == 1):
             return self.plotP[quarter]
