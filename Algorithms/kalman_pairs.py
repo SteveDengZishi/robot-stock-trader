@@ -116,7 +116,7 @@ class KalmanPairTrade(object):
                     self.entry_dt = now
         except Exception as e:
             # log.debug("[{}] {}".format(self.name, str(e)))
-            print('exception')
+            print(e)
 
     def update(self, context, data):
         prices = np.log(data.history(context.security_list, 'price', 1, '1m'))
