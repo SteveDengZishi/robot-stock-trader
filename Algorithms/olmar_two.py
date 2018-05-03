@@ -57,6 +57,8 @@ def handle_data(context, data):
 
     rebalance_portfolio(context, data, b_norm)
 
+    print(context.portfolio.cash)
+
     # update portfolio
     context.b_t = b_norm
 
