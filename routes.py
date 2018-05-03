@@ -12,7 +12,7 @@ import plotly.graph_objs as go
 import plotly.offline as off
 import plotly.tools as tls
 import Algorithms.learn_reversion as high_risk
-import Algorithms.kalman_pairs as mid_risk
+import Algorithms.dual_ema_talib as mid_risk
 import Algorithms.dual_moving_avg as low_risk
 
 
