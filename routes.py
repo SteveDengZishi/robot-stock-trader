@@ -12,7 +12,7 @@ import plotly.graph_objs as go
 import plotly.offline as off
 import plotly.tools as tls
 import Algorithms.momentum_based as high_risk
-import Algorithms.olmar_two as mid_risk
+import Algorithms.dual_moving_quick as mid_risk
 import Algorithms.dual_moving_avg as low_risk
 import os
 

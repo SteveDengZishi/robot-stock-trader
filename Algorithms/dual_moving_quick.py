@@ -10,7 +10,7 @@ from zipline.finance import commission, slippage
 
 
 def initialize(context):
-    context.sym = symbol('AMZN')
+    context.sym = symbol('SPY')
     context.i = 0
 
     # Explicitly set the commission/slippage to the "old" value until we can
@@ -42,6 +42,6 @@ def handle_data(context, data):
         order_target(context.sym, 0)
 
     # Save values for later inspection
-    record(AMZN=data.current(context.sym, "price"),
+    record(SPY=data.current(context.sym, "price"),
            short_mavg=short_mavg,
            long_mavg=long_mavg)
