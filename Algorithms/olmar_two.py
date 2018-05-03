@@ -62,7 +62,7 @@ def handle_data(context, data):
 
     #log.debug(b_norm)
 
-@batch_transform(refresh_period=1, window_length=5) #set globals R_P & W_L above
+# @batch_transform(refresh_period=1, window_length=5) #set globals R_P & W_L above
 def get_avg(datapanel,sid):
     prices = datapanel['price']
     avg = prices[sid].mean()
