@@ -177,13 +177,13 @@ class Zipliner:
 
     @staticmethod
     def getInstance():
-        os.environ['QUANDL-API-KEY'] = 'BfFWYESoFyQ_51bU1XXs'
+        os.environ['QUANDL_API_KEY'] = 'BfFWYESoFyQ_51bU1XXs'
         if Zipliner.__instance == None:
             Zipliner()
         try:
-            zipline.data.bundles.load('quandl')
+            zipline.data.bundles.load('quandl', environ=os.environ)
         except:
-            zipline.data.bundles.ingest('quandl')
+            zipline.data.bundles.ingest('quandl', environ=os.environ)
         return Zipliner.__instance
 
     def __init__(self):
@@ -191,8 +191,8 @@ class Zipliner:
             raise Exception("should be singleton")
         else:
             Zipliner.__instance = self
-            os.environ['QUANDL-API-KEY'] = 'BfFWYESoFyQ_51bU1XXs'
-            zipline.data.bundles.ingest('quandl')
+            os.environ['QUANDL_API_KEY'] = 'BfFWYESoFyQ_51bU1XXs'
+            zipline.data.bundles.ingest('quandl', environ=os.environ)
 
 
 
