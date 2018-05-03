@@ -115,7 +115,8 @@ class KalmanPairTrade(object):
                     order_target_percent(self._x, -self.leverage / 2.)
                     self.entry_dt = now
         except Exception as e:
-            log.debug("[{}] {}".format(self.name, str(e)))
+            # log.debug("[{}] {}".format(self.name, str(e)))
+            print('exception')
 
     def update(self, context, data):
         prices = np.log(data.history(context.security_list, 'price', 1, '1m'))
