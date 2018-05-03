@@ -3,7 +3,7 @@ import pandas as pd
 import pykalman
 from pykalman import KalmanFilter
 import statsmodels.api as sm
-from zipline.api import set_slippage, set_commission, sid
+from zipline.api import set_slippage, set_commission, sid, time_rules
 from zipline.finance import slippage, commission
 
 
