@@ -24,14 +24,14 @@ def initialize(context):
 def handle_data(context, data):
     # Skip first 300 days to get full windows
     context.i += 1
-    if context.i < 10:
+    if context.i < 9:
         return
 
     # Compute averages
     # history() has to be called with the same params
     # from above and returns a pandas dataframe.
     short_mavg = data.history(context.sym, 'price', 3, '1d').mean()
-    long_mavg = data.history(context.sym, 'price', 10, '1d').mean()
+    long_mavg = data.history(context.sym, 'price', 9, '1d').mean()
 
     # Trading logic
     if short_mavg > long_mavg:

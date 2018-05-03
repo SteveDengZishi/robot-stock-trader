@@ -49,6 +49,7 @@ class User(db.Model):
 
 class Zipliner:
     __instance = None
+    dfs = [None, None, None, None]
     plotP = ['', '', '', '']
     plotR = ['', '', '', '']
     dates = (
@@ -101,6 +102,7 @@ class Zipliner:
                 before_trading_start=high_risk.before_trading_start
             )
 
+        dfs[quarter] = df
         return df
 
     def get_fig(data, layout):
@@ -167,8 +169,8 @@ class Zipliner:
         else:
             return self.plotR[quarter]
 
-    def getDataFrame(self):
-    	return self.df
+    def getDataFrame(self, quarter):
+    	return self.dfs[quarter]
 
     def resetPlots(self):
         for i in range(0,4):
@@ -204,7 +206,7 @@ def portfolio():
     		zp = Zipliner.getInstance()
     		contentP = zp.getPlot(int(quarter), 1)
     		contentS = zp.getPlot(int(quarter), 2)
-    		df = zp.getDataFrame()
+    		df = zp.getDataFrame(int(quarter))
     		return render_template("portfolio.html", contentP=contentP, contentS=contentS, df=df)
     	else:
     		return "Please Enter an Integer from 1 ~ 4"
@@ -212,7 +214,7 @@ def portfolio():
         zp = Zipliner.getInstance()
         contentP = zp.getPlot(1, 1)
         contentS = zp.getPlot(1, 2)
-        df = zp.getDataFrame()
+        df = zp.getDataFrame(1)
         return render_template("portfolio.html", contentP=contentP, contentS=contentS, df=df)
 
 
