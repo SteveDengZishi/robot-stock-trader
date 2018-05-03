@@ -27,7 +27,7 @@ six==1.11.0
 Sphinx==1.7.4
 SQLAlchemy==1.2.5
 statsmodels==0.8.0
-TA-lib==0.4.17
+talib
 itsdangerous==0.24
 Jinja2==2.9.4
 Werkzeug==0.11.15

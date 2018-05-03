@@ -8,7 +8,7 @@ momentum).
 from zipline.api import order, record, symbol
 from zipline.finance import commission, slippage
 # Import exponential moving average from talib wrapper
-from TA-lib import EMA
+from talib import EMA
 
 
 def initialize(context):
