@@ -10,9 +10,9 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.offline as off
 import plotly.tools as tls
-import Algorithms.learn_reversion as high_risk
-import Algorithms.momentum_based as mid_risk
-import Algorithms.momentum_based as low_risk
+import Algorithms.momentum_based as high_risk
+import Algorithms.dual_moving_quick as mid_risk
+import Algorithms.dual_moving_avg as low_risk
 
 
 app = Flask(__name__)
@@ -80,8 +80,7 @@ class Zipliner:
                 end=end,
                 initialize=low_risk.initialize,
                 capital_base=capital,
-                handle_data=None,
-                before_trading_start=low_risk.before_trading_start
+                handle_data=low_risk.handle_data
             )
         elif (risk_level == 1):
             df = zipline.run_algorithm(
@@ -89,8 +88,7 @@ class Zipliner:
                 end=end,
                 initialize=mid_risk.initialize,
                 capital_base=capital,
-                handle_data=None,
-                before_trading_start=mid_risk.before_trading_start
+                handle_data=mid_risk.handle_data
             )
         elif (risk_level == 0):
             df = zipline.run_algorithm(
@@ -98,8 +96,8 @@ class Zipliner:
                 end=end,
                 initialize=high_risk.initialize,
                 capital_base=capital,
-                handle_data=high_risk.handle_data,
-                before_trading_start=None
+                handle_data=None,
+                before_trading_start=high_risk.before_trading_start
             )
 
         return df
@@ -167,7 +165,7 @@ class Zipliner:
             return self.plotP[quarter]
         else:
             return self.plotR[quarter]
-            
+
     def getDataFrame(self):
     	return self.df
 
