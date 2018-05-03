@@ -279,8 +279,10 @@ def signup():
 
 @app.route("/logout")
 def logout():
-    session.pop("username", None)
-    return redirect(url_for('login'))
+	zp = Zipliner.getInstance()
+	zp.resetPlots()
+	session.pop("username", None)
+	return redirect(url_for('login'))
 
 @app.route("/", methods = ['GET','POST'])
 def login():
