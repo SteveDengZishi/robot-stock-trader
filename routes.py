@@ -12,7 +12,7 @@ import plotly.graph_objs as go
 import plotly.offline as off
 import plotly.tools as tls
 import Algorithms.learn_reversion as high_risk
-import Algorithms.dual_ema_talib as mid_risk
+import Algorithms.momentum_based as mid_risk
 import Algorithms.dual_moving_avg as low_risk
 
 
@@ -89,7 +89,8 @@ class Zipliner:
                 end=end,
                 initialize=mid_risk.initialize,
                 capital_base=capital,
-                handle_data=mid_risk.handle_data
+                handle_data=None,
+                before_trading_start=mid_risk.before_trading_start
             )
         elif (risk_level == 0):
             df = zipline.run_algorithm(
